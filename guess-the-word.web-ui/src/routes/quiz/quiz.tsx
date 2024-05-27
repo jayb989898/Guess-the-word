@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 export default function Quiz() {
   const text: string = "abcadadeqwdfe";
   const textArr: Array<string> = text.split("");
-  const [cursor, setCursor] = useState(0);
+  const [focusInput, setFocusInput] = useState(0);
   const [inputs, setInputs] = useState(Array(text.length).join(".").split("."));
 
   useEffect(() => {
-    selectInput(cursor);
+    selectInput(focusInput);
   });
 
   let inputsComponent = () => {
@@ -35,7 +35,7 @@ export default function Quiz() {
       const input = inputs.map((currElement, i) =>
         i === index ? inputChar : currElement
       );
-      setCursor(index + 1);
+      setFocusInput(index + 1);
       setInputs(input);
     }
   }
