@@ -1,6 +1,7 @@
 import "./quiz.scss";
 import { useEffect, useState } from "react";
 import HeartsList from "../../components/hearts-list/hearts-list";
+import { Route, Routes, useNavigate } from "react-router-dom";
 
 export default function Quiz() {
   const totalLifes: number = 5;
@@ -10,18 +11,19 @@ export default function Quiz() {
   const [inputs, setInputs] = useState(Array(text.length).join(".").split("."));
   const [testPassed, setTestPassed] = useState(false);
   const [remainingLifes, setLifesRemaining] = useState(totalLifes);
+  const navigate = useNavigate();
 
   useEffect(() => {
     selectInput(focusInput);
     checkTestPassed();
   });
 
-  function selectInput(index: number) {
+  function selectInput(index: number): void {
     const input = document.getElementById(index.toString());
     input?.focus();
   }
 
-  function checkTestPassed() {
+  function checkTestPassed(): void {
     if (textArr.toString() === inputs.toString()) {
       setTestPassed(true);
     }
@@ -56,8 +58,15 @@ export default function Quiz() {
       setFocusInput(index + 1);
       setInputs(input);
     } else {
+      if (remainingLifes - 1 === 0) {
+        navigate("/lost-quiz");
+      }
       setLifesRemaining(remainingLifes - 1);
     }
+  }
+
+  function clickButton(): void {
+    navigate("/win-quiz");
   }
 
   return (
@@ -91,6 +100,7 @@ export default function Quiz() {
             <div className="flex content-center justify-center">
               <button
                 disabled={!testPassed}
+                onClick={() => clickButton()}
                 className={`${
                   testPassed
                     ? "bg-fuchsia-500 hover:bg-fuchsia-700"
