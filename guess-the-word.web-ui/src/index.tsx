@@ -5,6 +5,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Root from "./routes/root/root";
 import ErrorPage from "./routes/error-page";
 import Quiz from "./routes/quiz/quiz";
+import LostQuiz from "./routes/lost-quiz/lost-quiz";
+import WinQuiz from "./routes/win-quiz/win-quiz";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +17,14 @@ const router = createBrowserRouter([
       {
         path: "quiz",
         element: <Quiz />,
+      },
+      {
+        path: "lost-quiz",
+        element: <LostQuiz />,
+      },
+      {
+        path: "win-quiz",
+        element: <WinQuiz />,
       },
     ],
   },
