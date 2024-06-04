@@ -103,9 +103,9 @@ export default function Quiz() {
                 onClick={() => clickButton()}
                 className={`${
                   testPassed
-                    ? "bg-fuchsia-500 hover:bg-fuchsia-700"
-                    : "bg-fuchsia-900"
-                } text-white font-bold py-2 px-4 rounded`}
+                    ? "hover:bg-fuchsia-500 bg-fuchsia-700 focus-visible:outline-fuchsia-600"
+                    : "bg-fuchsia-500"
+                } "flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
               >
                 Button
               </button>

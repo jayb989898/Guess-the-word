@@ -51,7 +51,7 @@ export default function Login() {
                       <div className="text-sm">
                         <a
                           href="#"
-                          className="font-semibold text-indigo-600 hover:text-indigo-500"
+                          className="font-semibold text-fuchsia-700 hover:text-fuchsia-500"
                         >
                           Forgot password?
                         </a>
@@ -72,7 +72,7 @@ export default function Login() {
                   <div>
                     <button
                       type="submit"
-                      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="flex w-full justify-center rounded-md bg-fuchsia-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-fuchsia-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fuchsia-600"
                     >
                       Sign in
                     </button>
@@ -83,7 +83,7 @@ export default function Login() {
                   Not a member?{" "}
                   <a
                     href="#"
-                    className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+                    className="hover:text-fuchsia-500 text-fuchsia-700 font-semibold leading-6"
                   >
                     Register
                   </a>
