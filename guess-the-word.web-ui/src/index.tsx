@@ -7,6 +7,7 @@ import ErrorPage from "./routes/error-page";
 import Quiz from "./routes/quiz/quiz";
 import LostQuiz from "./routes/lost-quiz/lost-quiz";
 import WinQuiz from "./routes/win-quiz/win-quiz";
+import Login from "./routes/login/login";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
     element: <Root />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path: "login",
+        element: <Login />,
+      },
       {
         path: "quiz",
         element: <Quiz />,
