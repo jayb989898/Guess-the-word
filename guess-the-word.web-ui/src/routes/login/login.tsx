@@ -1,7 +1,38 @@
-import { Form } from "react-router-dom";
 import "./login.scss";
+import { useEffect, useState } from "react";
+import { LoginModel } from "../../models/login-model";
+import ButtonMain from "../../components/commons/button-main/button-main";
+import { ButtonMainProps } from "../../models/props/button-main-props";
+import { LinkMainProps } from "../../models/props/link-main-props";
+import LinkMain from "../../components/commons/link-main/link-main";
 
 export default function Login() {
+  const [formData, setFormData] = useState(new LoginModel());
+  const [formIsValid, setFormIsValid] = useState(false);
+  const emailReg: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+
+  useEffect(() => {
+    validateForm();
+  });
+
+  function setEmail(value: string): void {
+    setFormData({ ...formData, email: value });
+  }
+
+  function setPassword(value: string): void {
+    setFormData({ ...formData, password: value });
+  }
+
+  function validateForm(): void {
+    const mailIsValid: boolean = emailReg.test(formData.email);
+    const passwordIsValid: boolean = formData.password.length > 0;
+    setFormIsValid(mailIsValid && passwordIsValid);
+  }
+
+  function login(): void {
+    return;
+  }
+
   return (
     <>
       <div id="container-quiz">
@@ -18,9 +49,8 @@ export default function Login() {
                   Sign in to your account
                 </h2>
               </div>
-
               <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" action="#" method="POST">
+                <form className="space-y-6" onSubmit={() => login()}>
                   <div>
                     <label
                       htmlFor="email"
@@ -35,11 +65,12 @@ export default function Login() {
                         type="email"
                         autoComplete="email"
                         required
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-600 sm:text-sm sm:leading-6"
+                        value={formData.email}
+                        onChange={(event) => setEmail(event.target.value)}
                       />
                     </div>
                   </div>
-
                   <div>
                     <div className="flex items-center justify-between">
                       <label
@@ -49,12 +80,9 @@ export default function Login() {
                         Password
                       </label>
                       <div className="text-sm">
-                        <a
-                          href="#"
-                          className="font-semibold text-fuchsia-700 hover:text-fuchsia-500"
-                        >
-                          Forgot password?
-                        </a>
+                        <LinkMain
+                          {...new LinkMainProps("Forgot password?")}
+                        ></LinkMain>
                       </div>
                     </div>
                     <div className="mt-2">
@@ -64,29 +92,21 @@ export default function Login() {
                         type="password"
                         autoComplete="current-password"
                         required
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-600 sm:text-sm sm:leading-6"
+                        value={formData.password}
+                        onChange={(event) => setPassword(event.target.value)}
                       />
                     </div>
                   </div>
-
                   <div>
-                    <button
-                      type="submit"
-                      className="flex w-full justify-center rounded-md bg-fuchsia-700 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-fuchsia-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fuchsia-600"
-                    >
-                      Sign in
-                    </button>
+                    <ButtonMain
+                      {...new ButtonMainProps("Sign in", !formIsValid, true)}
+                    ></ButtonMain>
                   </div>
                 </form>
-
                 <p className="mt-10 text-center text-sm text-gray-500">
-                  Not a member?{" "}
-                  <a
-                    href="#"
-                    className="hover:text-fuchsia-500 text-fuchsia-700 font-semibold leading-6"
-                  >
-                    Register
-                  </a>
+                  Not a member?&nbsp;
+                  <LinkMain {...new LinkMainProps("Register")}></LinkMain>
                 </p>
               </div>
             </div>
