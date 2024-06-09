@@ -1,15 +1,88 @@
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import ButtonMain from "../../components/commons/button-main/button-main";
 import { ButtonMainProps } from "../../components/commons/button-main/button-main-props";
+import { useEffect, useRef, useState } from "react";
+import { RegisterModel } from "../../models/register-model";
+import { InputCheckService } from "../../services/input-check-service";
+import { InputTextProps } from "../../components/commons/input-text/input-text-props";
+import InputText from "../../components/commons/input-text/input-text";
 
 export default function Register() {
+  const inputCheckService = new InputCheckService();
+  const [formData, setFormData] = useState(new RegisterModel());
+  const [formIsValid, setFormIsValid] = useState(false);
+
+  //variables to red borders of inputs
+  const firstNameIsValid = useRef(true);
+  const lastNameIsValid = useRef(true);
+  const emailIsValid = useRef(true);
+  const quizLanguageIsValid = useRef(true);
+  const passwordIsValid = useRef(true);
+  const repeatPasswordIsValid = useRef(true);
+
+  useEffect(() => {
+    validateForm();
+  });
+
+  function setFirstName(value: string): void {
+    setFormData({ ...formData, firstName: value });
+    firstNameIsValid.current = inputCheckService.checkGeneric(value, true);
+  }
+
+  function setLastName(value: string): void {
+    setFormData({ ...formData, lastName: value });
+    lastNameIsValid.current = inputCheckService.checkGeneric(value, true);
+  }
+
+  function setEmail(value: string): void {
+    setFormData({ ...formData, email: value });
+    emailIsValid.current = inputCheckService.checkEmail(value, true);
+  }
+
+  function setQuizLanguage(value: string): void {
+    setFormData({ ...formData, quizLanguage: value });
+    quizLanguageIsValid.current = inputCheckService.checkGeneric(value, true);
+  }
+
+  function setPassword(value: string): void {
+    setFormData({ ...formData, password: value });
+    passwordIsValid.current = inputCheckService.checkPassword(value, true);
+  }
+
+  function setRepeatPassword(value: string): void {
+    setFormData({ ...formData, repeatPassword: value });
+    repeatPasswordIsValid.current = inputCheckService.checkCompare(
+      value,
+      formData.password,
+      true
+    );
+  }
+
+  function validateForm(): void {
+    const formIsValid: boolean =
+      inputCheckService.checkGeneric(formData.firstName) &&
+      inputCheckService.checkGeneric(formData.lastName) &&
+      inputCheckService.checkEmail(formData.email) &&
+      inputCheckService.checkGeneric(formData.quizLanguage) &&
+      inputCheckService.checkPassword(formData.password) &&
+      inputCheckService.checkCompare(
+        formData.repeatPassword,
+        formData.password
+      );
+    setFormIsValid(formIsValid);
+  }
+
+  function register(): void {
+    return;
+  }
+
   return (
     <>
       <div id="container-quiz">
         <div className="grid h-screen place-items-center">
           <div className="div-card rounded overflow-hidden shadow-lg bg-white w-4/5 sm:w-3/4 lg:w-1/2 xl:w-2/5 2xl:w-2/6">
             <div className="px-6 py-4 h-full">
-              <form>
+              <form onSubmit={() => register()}>
                 <div>
                   <div className="pb-2">
                     <h1 className="text-base font-semibold leading-7 text-gray-900">
@@ -21,55 +94,56 @@ export default function Register() {
                     <hr className="border-gray-400 mt-2"></hr>
                     <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
                       <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 text-gray-900">
-                          First name
-                        </label>
-                        <div className="mt-4">
-                          <input
-                            type="text"
-                            name="first-name"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:border-fuchsia-600 focus:ring-inset focus:ring-fuchsia-600 focus:outline-none"
-                          />
-                        </div>
+                        <InputText
+                          {...new InputTextProps(
+                            formData.firstName,
+                            "First name",
+                            firstNameIsValid.current,
+                            "first-name",
+                            "text",
+                            (value: string) => setFirstName(value)
+                          )}
+                        ></InputText>
                       </div>
                       <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 text-gray-900">
-                          Last name
-                        </label>
-                        <div className="mt-4">
-                          <input
-                            type="text"
-                            name="last-name"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:border-fuchsia-600 focus:ring-inset focus:ring-fuchsia-600 focus:outline-none"
-                          />
-                        </div>
+                        <InputText
+                          {...new InputTextProps(
+                            formData.lastName,
+                            "Last name",
+                            lastNameIsValid.current,
+                            "last-name",
+                            "text",
+                            (value: string) => setLastName(value)
+                          )}
+                        ></InputText>
                       </div>
                       <div className="sm:col-span-4">
-                        <label className="block text-sm font-medium leading-6 text-gray-900">
-                          Email address
-                        </label>
-                        <div className="mt-4">
-                          <input
-                            name="email"
-                            type="email"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:border-fuchsia-600 focus:ring-inset focus:ring-fuchsia-600 focus:outline-none"
-                          />
-                        </div>
+                        <InputText
+                          {...new InputTextProps(
+                            formData.email,
+                            "Email address",
+                            emailIsValid.current,
+                            "email",
+                            "email",
+                            (value: string) => setEmail(value),
+                            "Not a valid email address."
+                          )}
+                        ></InputText>
                       </div>
                     </div>
-                    <div className="mt-2 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
-                      <div className="col-span-full">
+                    <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
+                      <div className="sm:col-span-3">
                         <label className="block text-sm font-medium leading-6 text-gray-900">
                           Photo
                         </label>
-                        <div className="mt-4 flex items-center gap-x-3">
+                        <div className="mt-2 flex items-center gap-x-3">
                           <UserCircleIcon
                             className="h-12 w-12 text-gray-300"
                             aria-hidden="true"
                           />
                           <button
                             type="button"
-                            className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                            className="rounded-md bg-white px-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                           >
                             Choose file
                           </button>
@@ -79,10 +153,18 @@ export default function Register() {
                         <label className="block text-sm font-medium leading-6 text-gray-900">
                           Quiz language
                         </label>
-                        <div className="mt-4">
+                        <div className="mt-2">
                           <select
                             name="language"
-                            className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-xs sm:text-sm sm:leading-6"
+                            className={`${
+                              quizLanguageIsValid.current
+                                ? "ring-gray-300"
+                                : "ring-red-600"
+                            } block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-xs sm:text-sm sm:leading-6`}
+                            value={formData.quizLanguage}
+                            onChange={(event) =>
+                              setQuizLanguage(event.target.value)
+                            }
                           >
                             <option>United States</option>
                             <option>Canada</option>
@@ -91,23 +173,39 @@ export default function Register() {
                         </div>
                       </div>
                     </div>
+                    <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
+                      <div className="sm:col-span-4">
+                        <InputText
+                          {...new InputTextProps(
+                            formData.password,
+                            "Password",
+                            passwordIsValid.current,
+                            "password",
+                            "password",
+                            (value: string) => setPassword(value),
+                            "Password not strong enough."
+                          )}
+                        ></InputText>
+                      </div>
+                      <div className="sm:col-span-4">
+                        <InputText
+                          {...new InputTextProps(
+                            formData.repeatPassword,
+                            "Repeat password",
+                            repeatPasswordIsValid.current,
+                            "password-repeat",
+                            "password",
+                            (value: string) => setRepeatPassword(value),
+                            "Passwords do not match."
+                          )}
+                        ></InputText>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="mt-8 flex items-center justify-end gap-x-6">
-                  {/* <button
-                    type="button"
-                    className="text-sm font-semibold leading-6 text-gray-900"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Save
-                  </button> */}
                   <ButtonMain
-                    {...new ButtonMainProps("Register", false, true)}
+                    {...new ButtonMainProps("Register", !formIsValid, true)}
                   ></ButtonMain>
                 </div>
               </form>

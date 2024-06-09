@@ -1,5 +1,5 @@
 import "./login.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { LoginModel } from "../../models/login-model";
 import ButtonMain from "../../components/commons/button-main/button-main";
 import { ButtonMainProps } from "../../components/commons/button-main/button-main-props";
@@ -8,29 +8,38 @@ import LinkMain from "../../components/commons/link-main/link-main";
 import { TitleProps } from "../../components/commons/title/title-props";
 import Title from "../../components/commons/title/title";
 import Logo from "../../resources/logo.png";
+import { InputCheckService } from "../../services/input-check-service";
+import InputText from "../../components/commons/input-text/input-text";
+import { InputTextProps } from "../../components/commons/input-text/input-text-props";
+
 export default function Login() {
+  const inputCheckService = new InputCheckService();
   const [formData, setFormData] = useState(new LoginModel());
-  const [mailIsValid, setMailIsValid] = useState(false);
-  const [passwordIsValid, setPasswordIsValid] = useState(false);
-  const emailReg: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g; // eslint-disable-line
+  const [formIsValid, setFormIsValid] = useState(true);
+
+  //variables to red borders of inputs
+  const emailIsValid = useRef(true);
+  const passwordIsValid = useRef(true);
 
   useEffect(() => {
     validateForm();
   });
 
   function setEmail(value: string): void {
-    setFormData({ ...formData, email: value });
+    setFormData({ ...formData, email: value.trim() });
+    emailIsValid.current = inputCheckService.checkEmail(value, true);
   }
 
   function setPassword(value: string): void {
     setFormData({ ...formData, password: value });
+    passwordIsValid.current = inputCheckService.checkGeneric(value, true);
   }
 
   function validateForm(): void {
-    const mailIsValid: boolean = emailReg.test(formData.email);
-    setMailIsValid(mailIsValid);
-    const passwordIsValid: boolean = formData.password.length > 0;
-    setPasswordIsValid(passwordIsValid);
+    const formIsValid: boolean =
+      inputCheckService.checkEmail(formData.email) &&
+      inputCheckService.checkGeneric(formData.password);
+    setFormIsValid(formIsValid);
   }
 
   function login(): void {
@@ -54,68 +63,35 @@ export default function Login() {
               <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" onSubmit={() => login()}>
                   <div>
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium leading-6 text-gray-900"
-                    >
-                      Email address
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="email"
-                        name="email"
-                        type="email"
-                        autoComplete="email"
-                        required
-                        className={`${
-                          !mailIsValid && formData.email.length > 0
-                            ? "ring-red-600"
-                            : "ring-gray-300"
-                        } block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset sm:text-sm sm:leading-6 focus:border-fuchsia-600 focus:ring-inset focus:ring-fuchsia-600 focus:outline-none`}
-                        value={formData.email}
-                        onChange={(event) => setEmail(event.target.value)}
-                      />
-                    </div>
-                    <p className="text-red-500 mt-1">
-                      {!mailIsValid && formData.email.length > 0
-                        ? "Not a valid email address."
-                        : ""}
-                    </p>
+                    <InputText
+                      {...new InputTextProps(
+                        formData.email,
+                        "Repeat password",
+                        emailIsValid.current,
+                        "email",
+                        "email",
+                        (value: string) => setEmail(value),
+                        "Not a valid email address."
+                      )}
+                    ></InputText>
                   </div>
                   <div className="mt-3">
-                    <div className="flex items-center justify-between">
-                      <label
-                        htmlFor="password"
-                        className="block text-sm font-medium leading-6 text-gray-900"
-                      >
-                        Password
-                      </label>
-                      <div className="text-sm">
-                        <LinkMain
-                          {...new LinkMainProps("Forgot password?")}
-                        ></LinkMain>
-                      </div>
-                    </div>
-                    <div className="mt-2">
-                      <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        autoComplete="current-password"
-                        required
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:border-fuchsia-600 focus:ring-inset focus:ring-fuchsia-600 focus:outline-none"
-                        value={formData.password}
-                        onChange={(event) => setPassword(event.target.value)}
-                      />
-                    </div>
+                    <InputText
+                      {...new InputTextProps(
+                        formData.password,
+                        "Password",
+                        passwordIsValid.current,
+                        "password",
+                        "text",
+                        (value: string) => setPassword(value),
+                        undefined,
+                        "Forgot password?"
+                      )}
+                    ></InputText>
                   </div>
                   <div className="mt-3">
                     <ButtonMain
-                      {...new ButtonMainProps(
-                        "Sign in",
-                        !(mailIsValid && passwordIsValid),
-                        true
-                      )}
+                      {...new ButtonMainProps("Sign in", !formIsValid, true)}
                     ></ButtonMain>
                   </div>
                 </form>

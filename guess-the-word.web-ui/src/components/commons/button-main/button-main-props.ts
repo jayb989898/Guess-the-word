@@ -12,6 +12,6 @@ export class ButtonMainProps {
     this.text = text;
     this.disabled = disabled;
     this.submit = submit;
-    this.onClick = onClick === null ? undefined : onClick;
+    this.onClick = onClick;
   }
 }
