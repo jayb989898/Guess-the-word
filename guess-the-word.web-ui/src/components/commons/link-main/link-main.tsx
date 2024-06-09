@@ -1,4 +1,4 @@
-import { LinkMainProps } from "../../../models/props/link-main-props";
+import { LinkMainProps } from "./link-main-props";
 
 export default function LinkMain(props: LinkMainProps) {
   return (

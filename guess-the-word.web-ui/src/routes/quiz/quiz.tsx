@@ -1,7 +1,12 @@
 import "./quiz.scss";
 import { useEffect, useState } from "react";
 import HeartsList from "../../components/hearts-list/hearts-list";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { HeartsListProps } from "../../components/hearts-list/hearts-list-props";
+import ButtonMain from "../../components/commons/button-main/button-main";
+import { ButtonMainProps } from "../../components/commons/button-main/button-main-props";
+import Title from "../../components/commons/title/title";
+import { TitleProps } from "../../components/commons/title/title-props";
 
 export default function Quiz() {
   const totalLifes: number = 5;
@@ -19,7 +24,7 @@ export default function Quiz() {
   });
 
   function selectInput(index: number): void {
-    const input = document.getElementById(index.toString());
+    const input = document.getElementById(`quiz-input-box-${index}`);
     input?.focus();
   }
 
@@ -30,24 +35,29 @@ export default function Quiz() {
   }
 
   let inputsComponent = () => {
-    return textArr?.map((char: string, index: number) => {
-      return (
-        <>
-          <input
-            key={index}
-            id={index.toString()}
-            className="custom-input appearance-none w-11 border-solid border-2 rounded leading-tight focus:outline-none text-center align-middle text-xl py-1 border-slate-600 bg-black text-slate-100 focus:border-fuchsia-900"
-            type="text"
-            maxLength={1}
-            value={inputs[index]}
-            onChange={(e) => {
-              checkInputValue(index, e.target.value);
-            }}
-            disabled={inputs[index] !== ""}
-          />
-        </>
+    const arr = [];
+    //input box
+    for (let i = 0; i < textArr.length; i++) {
+      arr.push(
+        <input
+          key={`quiz-input-box-${i}`}
+          id={`quiz-input-box-${i}`}
+          className="custom-input appearance-none w-11 border-solid border-2 rounded leading-tight focus:outline-none text-center align-middle text-xl py-1 border-fuchsia-300 focus:border-fuchsia-500"
+          type="text"
+          maxLength={1}
+          value={inputs[i]}
+          onChange={(e) => {
+            checkInputValue(i, e.target.value);
+          }}
+          disabled={inputs[i] !== ""}
+        />
       );
-    });
+    }
+    return (
+      <div className="flex mx-3 content-center justify-between pt-14">
+        {arr}
+      </div>
+    );
   };
 
   function checkInputValue(index: number, inputChar: string): void {
@@ -72,14 +82,12 @@ export default function Quiz() {
   return (
     <div id="container-quiz">
       <div className="grid h-screen place-items-center">
-        <div className="rounded overflow-hidden shadow-lg bg-black h-1/2 min-h-96 min-w-96 max-w-3xl">
+        <div className="rounded overflow-hidden shadow-lg bg-white h-1/2 min-h-96 min-w-96 max-w-3xl">
           <div className="px-6 py-4 h-full">
             <div className="font-bold text-xl mb-8">
-              <p className="flex text-fuchsia-700 content-center justify-center">
-                Guess the word
-              </p>
+              <Title {...new TitleProps("Guess the word")}></Title>
             </div>
-            <div className="h-1/4 rounded bg-slate-600">
+            <div className="h-1/5 rounded bg-slate-600">
               <div className="size-full flex">
                 <div className="m-auto">
                   <span className="size-full tracking-[.25em] text-center text-6xl align-middle text-slate-400">
@@ -88,27 +96,19 @@ export default function Quiz() {
                 </div>
               </div>
               <HeartsList
-                totalLifes={totalLifes}
-                remainingLifes={remainingLifes}
+                {...new HeartsListProps(totalLifes, remainingLifes)}
               />
             </div>
-            <form className="h-2/4 w-full pt-2">
-              <div className="flex mx-3 content-center justify-between pt-14">
-                {inputsComponent()}
-              </div>
-            </form>
-            <div className="flex content-center justify-center">
-              <button
-                disabled={!testPassed}
-                onClick={() => clickButton()}
-                className={`${
-                  testPassed
-                    ? "hover:bg-fuchsia-500 bg-fuchsia-700 focus-visible:outline-fuchsia-600"
-                    : "bg-fuchsia-500"
-                } "flex w-full justify-center rounded-md px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2`}
-              >
-                Button
-              </button>
+            <div className="h-2/5 w-full pt-2">{inputsComponent()}</div>
+            <div className="h-1/5 content-center justify-center">
+              <ButtonMain
+                {...new ButtonMainProps(
+                  "Continue",
+                  !testPassed,
+                  false,
+                  clickButton
+                )}
+              ></ButtonMain>
             </div>
           </div>
         </div>

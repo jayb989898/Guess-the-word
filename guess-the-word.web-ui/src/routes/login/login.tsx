@@ -2,14 +2,17 @@ import "./login.scss";
 import { useEffect, useState } from "react";
 import { LoginModel } from "../../models/login-model";
 import ButtonMain from "../../components/commons/button-main/button-main";
-import { ButtonMainProps } from "../../models/props/button-main-props";
-import { LinkMainProps } from "../../models/props/link-main-props";
+import { ButtonMainProps } from "../../components/commons/button-main/button-main-props";
+import { LinkMainProps } from "../../components/commons/link-main/link-main-props";
 import LinkMain from "../../components/commons/link-main/link-main";
-
+import { TitleProps } from "../../components/commons/title/title-props";
+import Title from "../../components/commons/title/title";
+import Logo from "../../resources/logo.png";
 export default function Login() {
   const [formData, setFormData] = useState(new LoginModel());
-  const [formIsValid, setFormIsValid] = useState(false);
-  const emailReg: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+  const [mailIsValid, setMailIsValid] = useState(false);
+  const [passwordIsValid, setPasswordIsValid] = useState(false);
+  const emailReg: RegExp = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g; // eslint-disable-line
 
   useEffect(() => {
     validateForm();
@@ -25,8 +28,9 @@ export default function Login() {
 
   function validateForm(): void {
     const mailIsValid: boolean = emailReg.test(formData.email);
+    setMailIsValid(mailIsValid);
     const passwordIsValid: boolean = formData.password.length > 0;
-    setFormIsValid(mailIsValid && passwordIsValid);
+    setPasswordIsValid(passwordIsValid);
   }
 
   function login(): void {
@@ -37,17 +41,15 @@ export default function Login() {
     <>
       <div id="container-quiz">
         <div className="grid h-screen place-items-center">
-          <div className="div-card rounded overflow-hidden shadow-lg bg-white w-1/2">
+          <div className="div-card rounded overflow-hidden shadow-lg bg-white sm:w-3/4 lg:w-1/2 xl:w-2/5 2xl:w-2/6">
             <div className="px-6 py-4 h-full">
               <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                 <img
-                  className="mx-auto h-10 w-auto"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                  className="mx-auto h-16 w-auto"
+                  src={Logo}
                   alt="Your Company"
                 />
-                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                  Sign in to your account
-                </h2>
+                <Title {...new TitleProps("Sign in to your account")}></Title>
               </div>
               <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                 <form className="space-y-6" onSubmit={() => login()}>
@@ -65,13 +67,22 @@ export default function Login() {
                         type="email"
                         autoComplete="email"
                         required
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-600 sm:text-sm sm:leading-6"
+                        className={`${
+                          !mailIsValid && formData.email.length > 0
+                            ? "ring-red-600"
+                            : "ring-gray-300"
+                        } block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset sm:text-sm sm:leading-6 focus:border-fuchsia-600 focus:ring-inset focus:ring-fuchsia-600 focus:outline-none`}
                         value={formData.email}
                         onChange={(event) => setEmail(event.target.value)}
                       />
                     </div>
+                    <p className="text-red-500 mt-1">
+                      {!mailIsValid && formData.email.length > 0
+                        ? "Not a valid email address."
+                        : ""}
+                    </p>
                   </div>
-                  <div>
+                  <div className="mt-3">
                     <div className="flex items-center justify-between">
                       <label
                         htmlFor="password"
@@ -92,15 +103,19 @@ export default function Login() {
                         type="password"
                         autoComplete="current-password"
                         required
-                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-fuchsia-600 sm:text-sm sm:leading-6"
+                        className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:border-fuchsia-600 focus:ring-inset focus:ring-fuchsia-600 focus:outline-none"
                         value={formData.password}
                         onChange={(event) => setPassword(event.target.value)}
                       />
                     </div>
                   </div>
-                  <div>
+                  <div className="mt-3">
                     <ButtonMain
-                      {...new ButtonMainProps("Sign in", !formIsValid, true)}
+                      {...new ButtonMainProps(
+                        "Sign in",
+                        !(mailIsValid && passwordIsValid),
+                        true
+                      )}
                     ></ButtonMain>
                   </div>
                 </form>

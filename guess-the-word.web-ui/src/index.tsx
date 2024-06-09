@@ -8,6 +8,7 @@ import Quiz from "./routes/quiz/quiz";
 import LostQuiz from "./routes/lost-quiz/lost-quiz";
 import WinQuiz from "./routes/win-quiz/win-quiz";
 import Login from "./routes/login/login";
+import Register from "./routes/register/register";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />,
       },
       {
         path: "quiz",
