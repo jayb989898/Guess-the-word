@@ -78,138 +78,139 @@ export default function Register() {
 
   return (
     <>
-      <div id="container-quiz">
-        <div className="grid h-screen place-items-center">
-          <div className="div-card rounded overflow-hidden shadow-lg bg-white w-4/5 sm:w-3/4 lg:w-1/2 xl:w-2/5 2xl:w-2/6">
-            <div className="px-6 py-4 h-full">
-              <form onSubmit={() => register()}>
-                <div>
-                  <div className="pb-2">
-                    <h1 className="text-base font-semibold leading-7 text-gray-900">
-                      Register
-                    </h1>
-                    <p className="mt-2 text-sm leading-6 text-gray-600">
-                      Submit form and enjoy the game
-                    </p>
-                    <hr className="border-gray-400 mt-2"></hr>
-                    <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
-                      <div className="sm:col-span-3">
-                        <InputText
-                          {...new InputTextProps(
-                            formData.firstName,
-                            "First name",
-                            firstNameIsValid.current,
-                            "first-name",
-                            "text",
-                            (value: string) => setFirstName(value)
-                          )}
-                        ></InputText>
-                      </div>
-                      <div className="sm:col-span-3">
-                        <InputText
-                          {...new InputTextProps(
-                            formData.lastName,
-                            "Last name",
-                            lastNameIsValid.current,
-                            "last-name",
-                            "text",
-                            (value: string) => setLastName(value)
-                          )}
-                        ></InputText>
-                      </div>
-                      <div className="sm:col-span-4">
-                        <InputText
-                          {...new InputTextProps(
-                            formData.email,
-                            "Email address",
-                            emailIsValid.current,
-                            "email",
-                            "email",
-                            (value: string) => setEmail(value),
-                            "Not a valid email address."
-                          )}
-                        ></InputText>
+      <div
+        id="container-register"
+        className="sm:w-3/4 lg:w-1/2 xl:w-2/5 2xl:w-2/6 mt-10 mb-10"
+      >
+        <div className="div-card rounded overflow-hidden shadow-lg bg-white w-full">
+          <div className="px-6 py-4 h-full">
+            <form onSubmit={() => register()}>
+              <div>
+                <div className="pb-2">
+                  <h1 className="text-base font-semibold leading-7 text-gray-900">
+                    Register
+                  </h1>
+                  <p className="mt-2 text-sm leading-6 text-gray-600">
+                    Submit form and enjoy the game
+                  </p>
+                  <hr className="border-gray-400 mt-2"></hr>
+                  <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
+                    <div className="sm:col-span-3">
+                      <InputText
+                        {...new InputTextProps(
+                          formData.firstName,
+                          "First name",
+                          firstNameIsValid.current,
+                          "first-name",
+                          "text",
+                          (value: string) => setFirstName(value)
+                        )}
+                      ></InputText>
+                    </div>
+                    <div className="sm:col-span-3">
+                      <InputText
+                        {...new InputTextProps(
+                          formData.lastName,
+                          "Last name",
+                          lastNameIsValid.current,
+                          "last-name",
+                          "text",
+                          (value: string) => setLastName(value)
+                        )}
+                      ></InputText>
+                    </div>
+                    <div className="sm:col-span-4">
+                      <InputText
+                        {...new InputTextProps(
+                          formData.email,
+                          "Email address",
+                          emailIsValid.current,
+                          "email",
+                          "email",
+                          (value: string) => setEmail(value),
+                          "Not a valid email address."
+                        )}
+                      ></InputText>
+                    </div>
+                  </div>
+                  <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
+                    <div className="sm:col-span-3">
+                      <label className="block text-sm font-medium leading-6 text-gray-900">
+                        Photo
+                      </label>
+                      <div className="mt-2 flex items-center gap-x-3">
+                        <UserCircleIcon
+                          className="h-12 w-12 text-gray-300"
+                          aria-hidden="true"
+                        />
+                        <button
+                          type="button"
+                          className="rounded-md bg-white px-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                        >
+                          Choose file
+                        </button>
                       </div>
                     </div>
-                    <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
-                      <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 text-gray-900">
-                          Photo
-                        </label>
-                        <div className="mt-2 flex items-center gap-x-3">
-                          <UserCircleIcon
-                            className="h-12 w-12 text-gray-300"
-                            aria-hidden="true"
-                          />
-                          <button
-                            type="button"
-                            className="rounded-md bg-white px-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                          >
-                            Choose file
-                          </button>
-                        </div>
-                      </div>
-                      <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium leading-6 text-gray-900">
-                          Quiz language
-                        </label>
-                        <div className="mt-2">
-                          <select
-                            name="language"
-                            className={`${
-                              quizLanguageIsValid.current
-                                ? "ring-gray-300"
-                                : "ring-red-600"
-                            } block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-xs sm:text-sm sm:leading-6`}
-                            value={formData.quizLanguage}
-                            onChange={(event) =>
-                              setQuizLanguage(event.target.value)
-                            }
-                          >
-                            <option>United States</option>
-                            <option>Canada</option>
-                            <option>Mexico</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
-                      <div className="sm:col-span-4">
-                        <InputText
-                          {...new InputTextProps(
-                            formData.password,
-                            "Password",
-                            passwordIsValid.current,
-                            "password",
-                            "password",
-                            (value: string) => setPassword(value),
-                            "Password not strong enough."
-                          )}
-                        ></InputText>
-                      </div>
-                      <div className="sm:col-span-4">
-                        <InputText
-                          {...new InputTextProps(
-                            formData.repeatPassword,
-                            "Repeat password",
-                            repeatPasswordIsValid.current,
-                            "password-repeat",
-                            "password",
-                            (value: string) => setRepeatPassword(value),
-                            "Passwords do not match."
-                          )}
-                        ></InputText>
+                    <div className="sm:col-span-3">
+                      <label className="block text-sm font-medium leading-6 text-gray-900">
+                        Quiz language
+                      </label>
+                      <div className="mt-2">
+                        <select
+                          name="language"
+                          className={`${
+                            quizLanguageIsValid.current
+                              ? "ring-gray-300"
+                              : "ring-red-600"
+                          } block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-xs sm:text-sm sm:leading-6`}
+                          value={formData.quizLanguage}
+                          onChange={(event) =>
+                            setQuizLanguage(event.target.value)
+                          }
+                        >
+                          <option>United States</option>
+                          <option>Canada</option>
+                          <option>Mexico</option>
+                        </select>
                       </div>
                     </div>
                   </div>
+                  <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
+                    <div className="sm:col-span-4">
+                      <InputText
+                        {...new InputTextProps(
+                          formData.password,
+                          "Password",
+                          passwordIsValid.current,
+                          "password",
+                          "password",
+                          (value: string) => setPassword(value),
+                          "Password not strong enough."
+                        )}
+                      ></InputText>
+                    </div>
+                    <div className="sm:col-span-4">
+                      <InputText
+                        {...new InputTextProps(
+                          formData.repeatPassword,
+                          "Repeat password",
+                          repeatPasswordIsValid.current,
+                          "password-repeat",
+                          "password",
+                          (value: string) => setRepeatPassword(value),
+                          "Passwords do not match."
+                        )}
+                      ></InputText>
+                    </div>
+                  </div>
                 </div>
-                <div className="mt-8 flex items-center justify-end gap-x-6">
-                  <ButtonMain
-                    {...new ButtonMainProps("Register", !formIsValid, true)}
-                  ></ButtonMain>
-                </div>
-              </form>
-            </div>
+              </div>
+              <div className="mt-8 flex items-center justify-end gap-x-6">
+                <ButtonMain
+                  {...new ButtonMainProps("Register", !formIsValid, true)}
+                ></ButtonMain>
+              </div>
+            </form>
           </div>
         </div>
       </div>

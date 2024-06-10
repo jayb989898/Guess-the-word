@@ -5,10 +5,8 @@ import "./root.scss";
 export default function Root() {
   return (
     <>
-      <div id="container-root" className="h-screen">
-        <div id="sidebar">
-          <Outlet />
-        </div>
+      <div id="container-root" className="min-h-screen grid place-items-center">
+        <Outlet />
       </div>
     </>
   );

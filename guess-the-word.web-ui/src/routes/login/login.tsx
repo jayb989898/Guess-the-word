@@ -48,58 +48,59 @@ export default function Login() {
 
   return (
     <>
-      <div id="container-quiz">
-        <div className="grid h-screen place-items-center">
-          <div className="div-card rounded overflow-hidden shadow-lg bg-white sm:w-3/4 lg:w-1/2 xl:w-2/5 2xl:w-2/6">
-            <div className="px-6 py-4 h-full">
-              <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                <img
-                  className="mx-auto h-16 w-auto"
-                  src={Logo}
-                  alt="Your Company"
-                />
-                <Title {...new TitleProps("Sign in to your account")}></Title>
-              </div>
-              <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-                <form className="space-y-6" onSubmit={() => login()}>
-                  <div>
-                    <InputText
-                      {...new InputTextProps(
-                        formData.email,
-                        "Repeat password",
-                        emailIsValid.current,
-                        "email",
-                        "email",
-                        (value: string) => setEmail(value),
-                        "Not a valid email address."
-                      )}
-                    ></InputText>
-                  </div>
-                  <div className="mt-3">
-                    <InputText
-                      {...new InputTextProps(
-                        formData.password,
-                        "Password",
-                        passwordIsValid.current,
-                        "password",
-                        "text",
-                        (value: string) => setPassword(value),
-                        undefined,
-                        "Forgot password?"
-                      )}
-                    ></InputText>
-                  </div>
-                  <div className="mt-3">
-                    <ButtonMain
-                      {...new ButtonMainProps("Sign in", !formIsValid, true)}
-                    ></ButtonMain>
-                  </div>
-                </form>
-                <p className="mt-10 text-center text-sm text-gray-500">
-                  Not a member?&nbsp;
-                  <LinkMain {...new LinkMainProps("Register")}></LinkMain>
-                </p>
-              </div>
+      <div
+        id="container-login"
+        className="sm:w-3/4 lg:w-1/2 xl:w-2/5 2xl:w-2/6"
+      >
+        <div className="div-card rounded overflow-hidden shadow-lg bg-white w-full">
+          <div className="px-6 py-4 h-full">
+            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+              <img
+                className="mx-auto h-16 w-auto"
+                src={Logo}
+                alt="Your Company"
+              />
+              <Title {...new TitleProps("Sign in to your account")}></Title>
+            </div>
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+              <form className="space-y-6" onSubmit={() => login()}>
+                <div>
+                  <InputText
+                    {...new InputTextProps(
+                      formData.email,
+                      "Repeat password",
+                      emailIsValid.current,
+                      "email",
+                      "email",
+                      (value: string) => setEmail(value),
+                      "Not a valid email address."
+                    )}
+                  ></InputText>
+                </div>
+                <div className="mt-3">
+                  <InputText
+                    {...new InputTextProps(
+                      formData.password,
+                      "Password",
+                      passwordIsValid.current,
+                      "password",
+                      "text",
+                      (value: string) => setPassword(value),
+                      undefined,
+                      "Forgot password?"
+                    )}
+                  ></InputText>
+                </div>
+                <div className="mt-3">
+                  <ButtonMain
+                    {...new ButtonMainProps("Sign in", !formIsValid, true)}
+                  ></ButtonMain>
+                </div>
+              </form>
+              <p className="mt-10 text-center text-sm text-gray-500">
+                Not a member?&nbsp;
+                <LinkMain {...new LinkMainProps("Register")}></LinkMain>
+              </p>
             </div>
           </div>
         </div>
