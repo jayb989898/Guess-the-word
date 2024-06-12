@@ -486,3 +486,7 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+
+# Ignore migration folder Entity Framework
+Migrations/
