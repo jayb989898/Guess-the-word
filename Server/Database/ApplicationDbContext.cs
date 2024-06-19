@@ -1,34 +1,29 @@
 ﻿using Guess_the_word.Database.Tables;
 using Guess_the_word.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Guess_the_word.Database
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
+        public DbSet<Users> Users { get; set; }
         public DbSet<QuizLanguages> QuizLanguages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            //customizations
+            // Customizations
             builder.HasDefaultSchema("guessTheWordDatabase");
 
-
-            builder.Entity<QuizLanguages>(entity =>
-            {
-                entity.Property(e => e.Name).IsRequired();
-            });
-
+            // Additional configurations or entities...
+            base.OnModelCreating(builder);
 
             // Seed database with all Enums models
             builder
@@ -46,9 +41,9 @@ namespace Guess_the_word.Database
 
         public bool CreateOrUpdateDB()
         {
-            this.Database.EnsureCreated();
+            Database.EnsureCreated();
 
-            bool exist = this.Database.GetService<IRelationalDatabaseCreator>().Exists();
+            bool exist = Database.GetService<IRelationalDatabaseCreator>().Exists();
 
             return exist;
         }
