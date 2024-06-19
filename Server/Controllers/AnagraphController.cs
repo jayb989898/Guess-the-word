@@ -2,8 +2,6 @@ using Guess_the_word.Database;
 using Guess_the_word.Database.Tables;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
-using Microsoft.Extensions.Configuration;
 
 namespace Guess_the_word.Controllers
 {
@@ -23,7 +21,7 @@ namespace Guess_the_word.Controllers
         }
 
         [HttpGet("QuizLanguages")]
-        public IActionResult GetQuizLanguages()
+        public IActionResult QuizLanguages()
         {
             try
             {
@@ -32,8 +30,8 @@ namespace Guess_the_word.Controllers
                     List<QuizLanguages> quizLanguages = context.QuizLanguages.ToList();
                     return Ok(quizLanguages);
                 }
-            } 
-            catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _logger.LogCritical($"ErrorCritical \\ AnagraphController \\ GetQuizLanguages \\ Message: {ex.Message}, CompleteLog: {ex}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Cannot get data!");
