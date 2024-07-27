@@ -1,5 +1,9 @@
 using Guess_the_word.Database;
+using Guess_the_word.Database.Tables;
+using Guess_the_word.Services.DB;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +15,14 @@ builder.Services.AddEndpointsApiExplorer();
 
 // JWT Configuration
 builder.Services.AddAuthorization();
+builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
 
+// Identity Configuration
+builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddSignInManager()
+    .AddDefaultTokenProviders();
 
 // DB Configuration
 builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>

@@ -6,7 +6,7 @@
         public required string LastName { get; set; }
         public required string Email { get; set; }
         public byte[]? ThumbnailImage { get; set; }
-        public required int QuizLanguage_Id { get; set; }
+        public required QuizLanguagesEnum QuizLanguageId { get; set; }
         public required string Password { get; set; }
     }
 }

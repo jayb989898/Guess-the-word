@@ -1,18 +1,19 @@
 ﻿using Guess_the_word.Database.Tables;
 using Guess_the_word.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Guess_the_word.Database
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
         }
 
-        public DbSet<Users> Users { get; set; }
         public DbSet<QuizLanguages> QuizLanguages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

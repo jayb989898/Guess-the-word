@@ -6,6 +6,10 @@ import { RegisterModel } from "../../models/register-model";
 import { InputCheckService } from "../../services/input-check-service";
 import { InputTextProps } from "../../components/commons/input-text/input-text-props";
 import InputText from "../../components/commons/input-text/input-text";
+import Select from "../../components/commons/select/select";
+import { SelectProps } from "../../components/commons/select/select-props";
+import { SelectModel } from "../../components/commons/select/select-model";
+import { FindIdInSelect } from "../../services/commons/filters-service";
 
 export default function Register() {
   const inputCheckService = new InputCheckService();
@@ -19,6 +23,12 @@ export default function Register() {
   const quizLanguageIsValid = useRef(true);
   const passwordIsValid = useRef(true);
   const repeatPasswordIsValid = useRef(true);
+
+  const languages: Array<SelectModel> = [
+    { id: 0, value: "Mexico" },
+    { id: 1, value: "Italy" },
+    { id: 2, value: "English" },
+  ];
 
   useEffect(() => {
     validateForm();
@@ -40,8 +50,15 @@ export default function Register() {
   }
 
   function setQuizLanguage(value: string): void {
-    setFormData({ ...formData, quizLanguage: value });
-    quizLanguageIsValid.current = inputCheckService.checkGeneric(value, true);
+    const selectModel = FindIdInSelect(value, languages);
+    setFormData({
+      ...formData,
+      quizLanguage: selectModel,
+    });
+    quizLanguageIsValid.current = inputCheckService.checkSelect(
+      selectModel,
+      true
+    );
   }
 
   function setPassword(value: string): void {
@@ -63,7 +80,7 @@ export default function Register() {
       inputCheckService.checkGeneric(formData.firstName) &&
       inputCheckService.checkGeneric(formData.lastName) &&
       inputCheckService.checkEmail(formData.email) &&
-      inputCheckService.checkGeneric(formData.quizLanguage) &&
+      inputCheckService.checkSelect(formData.quizLanguage) &&
       inputCheckService.checkPassword(formData.password) &&
       inputCheckService.checkCompare(
         formData.repeatPassword,
@@ -152,27 +169,16 @@ export default function Register() {
                       </div>
                     </div>
                     <div className="sm:col-span-3">
-                      <label className="block text-sm font-medium leading-6 text-gray-900">
-                        Quiz language
-                      </label>
-                      <div className="mt-2">
-                        <select
-                          name="language"
-                          className={`${
-                            quizLanguageIsValid.current
-                              ? "ring-gray-300"
-                              : "ring-red-600"
-                          } block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:max-w-xs sm:text-sm sm:leading-6`}
-                          value={formData.quizLanguage}
-                          onChange={(event) =>
-                            setQuizLanguage(event.target.value)
-                          }
-                        >
-                          <option>United States</option>
-                          <option>Canada</option>
-                          <option>Mexico</option>
-                        </select>
-                      </div>
+                      <Select
+                        {...new SelectProps(
+                          formData.quizLanguage,
+                          "Quiz language",
+                          quizLanguageIsValid.current,
+                          languages,
+                          "quizLanguage",
+                          (value: string) => setQuizLanguage(value)
+                        )}
+                      ></Select>
                     </div>
                   </div>
                   <div className="mt-4 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">

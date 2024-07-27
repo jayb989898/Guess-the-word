@@ -1,5 +1,9 @@
 using Guess_the_word.Database;
+using Guess_the_word.Database.Tables;
+using Guess_the_word.Models;
 using Guess_the_word.Models.DTO;
+using Guess_the_word.Services.CheckRequests;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,13 +15,15 @@ namespace Guess_the_word.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<AnagraphController> _logger;
-        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
+        private readonly ICheckRequestService _checkRequestService;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AuthController(IConfiguration configuration, ILogger<AnagraphController> logger, IDbContextFactory<ApplicationDbContext> contextFactory)
+        public AuthController(IConfiguration configuration, ILogger<AnagraphController> logger, ICheckRequestService checkRequestService, UserManager<ApplicationUser> userManager)
         {
             _configuration = configuration;
             _logger = logger;
-            _contextFactory = contextFactory;
+            _checkRequestService = checkRequestService;
+            _userManager = userManager;
         }
 
         [HttpPost("Register")]
@@ -25,7 +31,15 @@ namespace Guess_the_word.Controllers
         {
             try
             {
-                throw new NotImplementedException();
+                GenericResponse requestIsValid = _checkRequestService.CheckRegisterRequest(request);
+                if (!requestIsValid.IsOk)
+                {
+                    throw new Exception();
+                }
+
+                _userManager.CreateAsync(new ApplicationUser(request.Email, request.QuizLanguageId, request.ThumbnailImage));
+
+                return Ok();
             }
             catch (Exception ex)
             {
