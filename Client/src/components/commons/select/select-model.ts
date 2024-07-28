@@ -1,8 +1,8 @@
 export class SelectModel {
   id: number;
-  value: string;
-  constructor(id: number, value: string) {
+  name: string;
+  constructor(id: number, name: string) {
     this.id = id;
-    this.value = value;
+    this.name = name;
   }
 }

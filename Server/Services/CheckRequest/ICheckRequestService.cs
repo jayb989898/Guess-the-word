@@ -5,6 +5,6 @@ namespace Guess_the_word.Services.CheckRequests
 {
     public interface ICheckRequestService
     {
-        public GenericResponse CheckRegisterRequest(RegisterRequestDTO request);
+        public Task<GenericResponse> CheckRegisterRequest(RegisterRequestDTO request);
     }
 }

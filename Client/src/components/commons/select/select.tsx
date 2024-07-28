@@ -42,12 +42,12 @@ export default function Select(props: SelectProps) {
               ? "ring-gray-300"
               : "ring-red-600 focus:ring-red-600"
           } block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 sm:text-sm sm:leading-6 focus:border-fuchsia-600 focus:ring-inset focus:ring-fuchsia-600 focus:outline-none`}
-          value={props.value?.value || ""}
+          value={props.value?.name || ""}
           onChange={(event) => props.onChange(event.target.value)}
         >
           <option value="" disabled hidden></option>
           {props.options.map((x, y) => (
-            <option key={y}>{x.value}</option>
+            <option key={y}>{x.name}</option>
           ))}
         </select>
       </div>

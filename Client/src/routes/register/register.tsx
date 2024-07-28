@@ -10,9 +10,12 @@ import Select from "../../components/commons/select/select";
 import { SelectProps } from "../../components/commons/select/select-props";
 import { SelectModel } from "../../components/commons/select/select-model";
 import { FindIdInSelect } from "../../services/commons/filters-service";
+import { AuthService } from "../../services/auth-service";
+import { RegisterRequest } from "../../models/requests/register-reguest";
 
 export default function Register() {
   const inputCheckService = new InputCheckService();
+  const authService = new AuthService();
   const [formData, setFormData] = useState(new RegisterModel());
   const [formIsValid, setFormIsValid] = useState(false);
 
@@ -25,9 +28,9 @@ export default function Register() {
   const repeatPasswordIsValid = useRef(true);
 
   const languages: Array<SelectModel> = [
-    { id: 0, value: "Mexico" },
-    { id: 1, value: "Italy" },
-    { id: 2, value: "English" },
+    { id: 0, name: "Mexico" },
+    { id: 1, name: "Italy" },
+    { id: 2, name: "English" },
   ];
 
   useEffect(() => {
@@ -89,8 +92,9 @@ export default function Register() {
     setFormIsValid(formIsValid);
   }
 
-  function register(): void {
-    return;
+  function register(event: React.FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    authService.register(new RegisterRequest(formData));
   }
 
   return (
@@ -101,7 +105,7 @@ export default function Register() {
       >
         <div className="div-card rounded overflow-hidden shadow-lg bg-white w-full">
           <div className="px-6 py-4 h-full">
-            <form onSubmit={() => register()}>
+            <form onSubmit={(event) => register(event)}>
               <div>
                 <div className="pb-2">
                   <h1 className="text-base font-semibold leading-7 text-gray-900">

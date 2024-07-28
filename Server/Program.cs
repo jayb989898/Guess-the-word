@@ -1,5 +1,6 @@
 using Guess_the_word.Database;
 using Guess_the_word.Database.Tables;
+using Guess_the_word.Services.CheckRequests;
 using Guess_the_word.Services.DB;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +32,23 @@ builder.Services.AddDbContextFactory<ApplicationDbContext>(options =>
 // Swagger Configuiration
 builder.Services.AddSwaggerGen();
 
+// Inject Services
+builder.Services.AddTransient<ICheckRequestService, CheckRequestService>();
+
+// CORS enabling
+builder.Services.AddCors(options => options.AddPolicy("CorsPolicy",
+                builder =>
+                {
+                    builder
+                    .WithOrigins("http://localhost:3000")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+                }));
+
 var app = builder.Build();
+
+app.UseCors("CorsPolicy");
 
 using (var scope = app.Services.CreateScope())
 {

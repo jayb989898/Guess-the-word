@@ -1,5 +1,6 @@
 using Guess_the_word.Database;
 using Guess_the_word.Database.Tables;
+using Guess_the_word.Helpers;
 using Guess_the_word.Models;
 using Guess_the_word.Models.DTO;
 using Guess_the_word.Services.CheckRequests;
@@ -16,35 +17,39 @@ namespace Guess_the_word.Controllers
         private readonly IConfiguration _configuration;
         private readonly ILogger<AnagraphController> _logger;
         private readonly ICheckRequestService _checkRequestService;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly AuthHelper _authHelper;
 
-        public AuthController(IConfiguration configuration, ILogger<AnagraphController> logger, ICheckRequestService checkRequestService, UserManager<ApplicationUser> userManager)
+        public AuthController(IConfiguration configuration, ILogger<AnagraphController> logger, ICheckRequestService checkRequestService, UserManager<ApplicationUser> userManager, IDbContextFactory<ApplicationDbContext> contextFactory)
         {
             _configuration = configuration;
             _logger = logger;
             _checkRequestService = checkRequestService;
-            _userManager = userManager;
+            _authHelper = new AuthHelper(configuration, logger, userManager, contextFactory);
         }
 
         [HttpPost("Register")]
-        public IActionResult Register([FromBody] RegisterRequestDTO request)
+        public async Task<IActionResult> Register([FromBody] RegisterRequestDTO request)
         {
             try
             {
-                GenericResponse requestIsValid = _checkRequestService.CheckRegisterRequest(request);
+                GenericResponse requestIsValid = await _checkRequestService.CheckRegisterRequest(request);
                 if (!requestIsValid.IsOk)
                 {
-                    throw new Exception();
+                    return StatusCode(StatusCodes.Status400BadRequest, requestIsValid.ErrorMessage);
                 }
 
-                _userManager.CreateAsync(new ApplicationUser(request.Email, request.QuizLanguageId, request.ThumbnailImage));
+                GenericResponse userRegistered = await _authHelper.Register(request);
+                if (!requestIsValid.IsOk)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, requestIsValid.ErrorMessage);
+                }
 
                 return Ok();
             }
             catch (Exception ex)
             {
                 _logger.LogCritical($"ErrorCritical \\ AuthController \\ Register \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
-                return StatusCode(StatusCodes.Status500InternalServerError, "Cannot perform the registration, try later!");
+                return StatusCode(StatusCodes.Status500InternalServerError, ErrorMessages.genericErrorRegister);
             }
         }
     }

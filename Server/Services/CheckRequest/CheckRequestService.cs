@@ -2,6 +2,7 @@
 using Guess_the_word.Database;
 using Guess_the_word.Models;
 using Guess_the_word.Models.DTO;
+using Guess_the_word.Services.DB.Transaction;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -11,26 +12,56 @@ namespace Guess_the_word.Services.CheckRequests
     {
         private readonly IConfiguration _configuration;
         private readonly ILogger<AnagraphController> _logger;
-        private readonly IDbContextFactory<ApplicationDbContext> _contextFactory;
+        private readonly IQueryService _queryService;
 
         public CheckRequestService(IConfiguration configuration, ILogger<AnagraphController> logger, IDbContextFactory<ApplicationDbContext> contextFactory)
         {
             _configuration = configuration;
             _logger = logger;
-            _contextFactory = contextFactory;
+            _queryService = new QueryService(configuration, logger, contextFactory);
         }
 
 
-        public GenericResponse CheckRegisterRequest(RegisterRequestDTO request)
+        public async Task<GenericResponse> CheckRegisterRequest(RegisterRequestDTO request)
         {
             GenericResponse response = new GenericResponse();
 
             try
             {
-                StringIsValid(request.FirstName);
-                StringIsValid(request.LastName);
-                StringIsValid(request.Email);
-                StringIsValid(request.Password);
+                bool firstNameIsValid = StringIsValid(request.FirstName);
+                if (!firstNameIsValid)
+                {
+                    response.SetError(ErrorMessages.genericErrorRegister);
+                    return response;
+                }
+
+                bool lastNameIsValid = StringIsValid(request.LastName);
+                if (!lastNameIsValid)
+                {
+                    response.SetError(ErrorMessages.genericErrorRegister);
+                    return response;
+                }
+
+                bool emailIsValid = StringIsValid(request.Email);
+                if (!emailIsValid)
+                {
+                    response.SetError(ErrorMessages.genericErrorRegister);
+                    return response;
+                }
+
+                bool passwordIsValid = StringIsValid(request.Password);
+                if (!passwordIsValid)
+                {
+                    response.SetError(ErrorMessages.genericErrorRegister);
+                    return response;
+                }
+
+                bool emailNotExist = await _queryService.EmailNotExist(request.Email);
+                if (!emailNotExist)
+                {
+                    response.SetError(ErrorMessages.emailAlreadyRegistered);
+                    return response;
+                }
 
                 response.SetOk();
             }
@@ -43,12 +74,9 @@ namespace Guess_the_word.Services.CheckRequests
             return response;
         }
 
-        private void StringIsValid(string value)
+        private bool StringIsValid(string value)
         {
-            if (!string.IsNullOrEmpty(value))
-            {
-                throw new Exception();
-            }
+            return !string.IsNullOrEmpty(value);
         }
     }
 }

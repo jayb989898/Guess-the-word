@@ -1,11 +1,11 @@
 import { SelectModel } from "../../components/commons/select/select-model";
 
 export function FindIdInSelect(
-  value: string,
+  name: string,
   options: Array<SelectModel>
 ): SelectModel | null {
   const selectModel = options.find((item: SelectModel) => {
-    return item.value === value;
+    return item.name === name;
   });
 
   return selectModel === undefined ? null : selectModel;
