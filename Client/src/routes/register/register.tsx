@@ -12,12 +12,19 @@ import { SelectModel } from "../../components/commons/select/select-model";
 import { FindIdInSelect } from "../../services/commons/filters-service";
 import { AuthService } from "../../services/auth-service";
 import { RegisterRequest } from "../../models/requests/register-reguest";
+import DialogMain from "../../components/dialog/dialog-main";
+import { DialogMainProps } from "../../components/dialog/dialog-main-props";
+import { ResponseGenericModel } from "../../models/response-generic-model";
+import LinkMain from "../../components/commons/link-main/link-main";
+import { LinkMainProps } from "../../components/commons/link-main/link-main-props";
 
 export default function Register() {
   const inputCheckService = new InputCheckService();
   const authService = new AuthService();
   const [formData, setFormData] = useState(new RegisterModel());
   const [formIsValid, setFormIsValid] = useState(false);
+  const [openRegistrationOkDialog, setOpenRegistrationOkDialog] =
+    useState(false);
 
   //variables to red borders of inputs
   const firstNameIsValid = useRef(true);
@@ -67,6 +74,14 @@ export default function Register() {
   function setPassword(value: string): void {
     setFormData({ ...formData, password: value });
     passwordIsValid.current = inputCheckService.checkPassword(value, true);
+
+    if (formData.repeatPassword.length > 0) {
+      repeatPasswordIsValid.current = inputCheckService.checkCompare(
+        value,
+        formData.repeatPassword,
+        true
+      );
+    }
   }
 
   function setRepeatPassword(value: string): void {
@@ -94,7 +109,18 @@ export default function Register() {
 
   function register(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    authService.register(new RegisterRequest(formData));
+    authService
+      .register(new RegisterRequest(formData))
+      .then((res: ResponseGenericModel) => {
+        if (res.isOk) {
+          setOpenRegistrationOkDialog(true);
+        } else {
+        }
+      });
+  }
+
+  function closeModal(): void {
+    setOpenRegistrationOkDialog(false);
   }
 
   return (
@@ -221,6 +247,25 @@ export default function Register() {
                 ></ButtonMain>
               </div>
             </form>
+            <DialogMain
+              {...new DialogMainProps(
+                openRegistrationOkDialog,
+                "Registrazione avvenuta con successo!",
+                (
+                  <p>
+                    Conferma la mail di registrazione e vai alla{" "}
+                    <LinkMain
+                      {...new LinkMainProps("login", "/login")}
+                    ></LinkMain>
+                    !
+                  </p>
+                ),
+                false,
+                null,
+                null,
+                () => closeModal()
+              )}
+            ></DialogMain>
           </div>
         </div>
       </div>

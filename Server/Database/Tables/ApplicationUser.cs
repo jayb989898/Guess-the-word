@@ -14,7 +14,6 @@ namespace Guess_the_word.Database.Tables
 
         [ForeignKey("QuizLanguages")]
         public int QuizLanguageId { get; set; }
-
         public virtual QuizLanguages? QuizLanguages { get; set; }
 
         public byte[]? ThumbnailImage { get; set; }

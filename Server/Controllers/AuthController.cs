@@ -39,9 +39,9 @@ namespace Guess_the_word.Controllers
                 }
 
                 GenericResponse userRegistered = await _authHelper.Register(request);
-                if (!requestIsValid.IsOk)
+                if (!userRegistered.IsOk)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, requestIsValid.ErrorMessage);
+                    return StatusCode(StatusCodes.Status500InternalServerError, userRegistered.ErrorMessage);
                 }
 
                 return Ok();
