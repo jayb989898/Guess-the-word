@@ -1,7 +1,7 @@
-import ButtonMain from "../commons/button-main/button-main";
-import { ButtonMainProps } from "../commons/button-main/button-main-props";
-import ButtonSecondary from "../commons/button-secondary/button-secondary";
-import { ButtonSecondaryProps } from "../commons/button-secondary/button-secondary-props";
+import ButtonMain from "../button-main/button-main";
+import { ButtonMainProps } from "../button-main/button-main-props";
+import ButtonSecondary from "../button-secondary/button-secondary";
+import { ButtonSecondaryProps } from "../button-secondary/button-secondary-props";
 import { DialogMainProps } from "./dialog-main-props";
 
 export default function DialogMain(props: DialogMainProps) {

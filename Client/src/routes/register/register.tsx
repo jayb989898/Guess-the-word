@@ -12,11 +12,13 @@ import { SelectModel } from "../../components/commons/select/select-model";
 import { FindIdInSelect } from "../../services/commons/filters-service";
 import { AuthService } from "../../services/auth-service";
 import { RegisterRequest } from "../../models/requests/register-reguest";
-import DialogMain from "../../components/dialog/dialog-main";
-import { DialogMainProps } from "../../components/dialog/dialog-main-props";
 import { ResponseGenericModel } from "../../models/response-generic-model";
 import LinkMain from "../../components/commons/link-main/link-main";
 import { LinkMainProps } from "../../components/commons/link-main/link-main-props";
+import DialogMain from "../../components/commons/dialog/dialog-main";
+import { DialogMainProps } from "../../components/commons/dialog/dialog-main-props";
+import PopupMessage from "../../components/commons/popup-message/popup-message";
+import { PopupMessageProps } from "../../components/commons/popup-message/popup-message-props";
 
 export default function Register() {
   const inputCheckService = new InputCheckService();
@@ -24,6 +26,8 @@ export default function Register() {
   const [formData, setFormData] = useState(new RegisterModel());
   const [formIsValid, setFormIsValid] = useState(false);
   const [openRegistrationOkDialog, setOpenRegistrationOkDialog] =
+    useState(false);
+  const [openRegistrationErrorPupup, setOpenRegistrationErrorPupup] =
     useState(false);
 
   //variables to red borders of inputs
@@ -115,12 +119,17 @@ export default function Register() {
         if (res.isOk) {
           setOpenRegistrationOkDialog(true);
         } else {
+          setOpenRegistrationErrorPupup(true);
         }
       });
   }
 
   function closeModal(): void {
     setOpenRegistrationOkDialog(false);
+  }
+
+  function closePopup(): void {
+    setOpenRegistrationErrorPupup(false);
   }
 
   return (
@@ -266,6 +275,14 @@ export default function Register() {
                 () => closeModal()
               )}
             ></DialogMain>
+            <PopupMessage
+              {...new PopupMessageProps(
+                openRegistrationErrorPupup,
+                "errore",
+                "errore registrazione",
+                () => closePopup()
+              )}
+            ></PopupMessage>
           </div>
         </div>
       </div>
