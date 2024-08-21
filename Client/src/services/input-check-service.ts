@@ -4,7 +4,7 @@ const emailReg: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]{2,6}$/; // eslint-disable-lin
 const passwordReg: RegExp =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; // eslint-disable-line
 
-export class InputCheckService {
+class InputCheckService {
   public checkGeneric(
     value: string,
     ignoreInitialState: boolean = false
@@ -66,3 +66,5 @@ export class InputCheckService {
     return isValid;
   }
 }
+
+export const inputCheckService = new InputCheckService();

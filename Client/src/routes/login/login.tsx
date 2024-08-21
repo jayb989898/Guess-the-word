@@ -8,12 +8,11 @@ import LinkMain from "../../components/commons/link-main/link-main";
 import { TitleProps } from "../../components/commons/title/title-props";
 import Title from "../../components/commons/title/title";
 import Logo from "../../resources/logo.png";
-import { InputCheckService } from "../../services/input-check-service";
 import InputText from "../../components/commons/input-text/input-text";
 import { InputTextProps } from "../../components/commons/input-text/input-text-props";
+import { inputCheckService } from "../../services/input-check-service";
 
 export default function Login() {
-  const inputCheckService = new InputCheckService();
   const [formData, setFormData] = useState(new LoginModel());
   const [formIsValid, setFormIsValid] = useState(true);
 

@@ -3,26 +3,24 @@ import ButtonMain from "../../components/commons/button-main/button-main";
 import { ButtonMainProps } from "../../components/commons/button-main/button-main-props";
 import { useEffect, useRef, useState } from "react";
 import { RegisterModel } from "../../models/register-model";
-import { InputCheckService } from "../../services/input-check-service";
 import { InputTextProps } from "../../components/commons/input-text/input-text-props";
 import InputText from "../../components/commons/input-text/input-text";
 import Select from "../../components/commons/select/select";
 import { SelectProps } from "../../components/commons/select/select-props";
 import { SelectModel } from "../../components/commons/select/select-model";
-import { FindIdInSelect } from "../../services/commons/filters-service";
-import { AuthService } from "../../services/auth-service";
 import LinkMain from "../../components/commons/link-main/link-main";
 import { LinkMainProps } from "../../components/commons/link-main/link-main-props";
 import DialogMain from "../../components/commons/dialog/dialog-main";
 import { DialogMainProps } from "../../components/commons/dialog/dialog-main-props";
 import { PopupMessageProps } from "../../components/commons/popup-message/popup-message-props";
-import { popupService } from "../../components/commons/popup-message/popup-service";
+import { popupService } from "../../services/popup-service";
 import { RegisterRequest } from "../../models/requests/register-reguest";
 import { ResponseGenericModel } from "../../models/response-generic-model";
+import { inputCheckService } from "../../services/input-check-service";
+import { filterService } from "../../services/filters-service";
+import { authService } from "../../services/auth-service";
 
 export default function Register() {
-  const inputCheckService = new InputCheckService();
-  const authService = new AuthService();
   const [formData, setFormData] = useState(new RegisterModel());
   const [formIsValid, setFormIsValid] = useState(false);
   const [openRegistrationOkDialog, setOpenRegistrationOkDialog] =
@@ -62,7 +60,7 @@ export default function Register() {
   }
 
   function setQuizLanguage(value: string): void {
-    const selectModel = FindIdInSelect(value, languages);
+    const selectModel = filterService.findIdInSelect(value, languages);
     setFormData({
       ...formData,
       quizLanguage: selectModel,
@@ -111,17 +109,11 @@ export default function Register() {
 
   function register(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-
     authService
       .register(new RegisterRequest(formData))
       .then((res: ResponseGenericModel) => {
         if (res.isOk) {
           setOpenRegistrationOkDialog(true);
-        } else {
-          //implement service http
-          popupService.open(
-            new PopupMessageProps(true, "titolo a caso", "testo a caso")
-          );
         }
       });
   }

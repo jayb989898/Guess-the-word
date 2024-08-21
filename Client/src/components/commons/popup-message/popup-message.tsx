@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PopupMessageProps } from "./popup-message-props";
-import { popupService } from "./popup-service";
+import { popupService } from "../../../services/popup-service";
 
 export default function PopupMessage() {
   const [propsState, setPropsState] = useState<PopupMessageProps>(
@@ -8,7 +8,7 @@ export default function PopupMessage() {
   );
 
   useEffect(() => {
-    const subscription = popupService.popup$.subscribe(setPropsState);
+    popupService.popup$.subscribe(setPropsState);
 
     const timeoutId = setTimeout(() => {
       close();
@@ -16,13 +16,8 @@ export default function PopupMessage() {
     return () => clearTimeout(timeoutId);
   });
 
-  function open(props: PopupMessageProps): void {
-    setPropsState(new PopupMessageProps());
-  }
-
   function close(): void {
     popupService.close();
-    // setPropsState(new PopupMessageProps());
   }
 
   if (!propsState.show) {

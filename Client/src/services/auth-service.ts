@@ -1,8 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { RegisterRequest } from "../models/requests/register-reguest";
 import { ResponseGenericModel } from "../models/response-generic-model";
+import { popupService } from "./popup-service";
 
-export class AuthService {
+class AuthService {
   private apiAuth: string = "https://localhost:7068/api/auth/";
 
   public async register(
@@ -17,6 +18,9 @@ export class AuthService {
         return new ResponseGenericModel(null, error);
       });
 
+    popupService.showErrorHttp(res);
     return res;
   }
 }
+
+export const authService = new AuthService();
