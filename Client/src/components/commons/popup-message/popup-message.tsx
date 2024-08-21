@@ -1,29 +1,41 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { PopupMessageProps } from "./popup-message-props";
+import { popupService } from "./popup-service";
 
-export default function PopupMessage(props: PopupMessageProps) {
+export default function PopupMessage() {
+  const [propsState, setPropsState] = useState<PopupMessageProps>(
+    new PopupMessageProps()
+  );
+
   useEffect(() => {
-    if (props.show) {
-      const timer = setTimeout(() => {
-        props.onClose();
-      }, 4000);
+    const subscription = popupService.popup$.subscribe(setPropsState);
 
-      return () => clearTimeout(timer);
-    }
+    const timeoutId = setTimeout(() => {
+      close();
+    }, 5000); // Static 5 seconds duration
+    return () => clearTimeout(timeoutId);
   });
 
-  if (!props.show) {
+  function open(props: PopupMessageProps): void {
+    setPropsState(new PopupMessageProps());
+  }
+
+  function close(): void {
+    popupService.close();
+    // setPropsState(new PopupMessageProps());
+  }
+
+  if (!propsState.show) {
     return null;
   }
 
   return (
     <div
-      className={`fixed top-4 right-4 p-4 bg-blue-500 text-white rounded-lg shadow-lg transition-transform transform ${
-        props.show ? "translate-y-0" : "translate-y-[-200%]"
-      }`}
+      className={`fixed top-4 right-4 p-4 bg-blue-500 text-white rounded-lg shadow-lg transition-transform transform ${"translate-y-0"}`}
     >
-      <h3 className="font-bold text-lg">{props.title}</h3>
-      <p>{props.text}</p>
+      <h3 className="font-bold text-lg">{propsState.title}</h3>
+      <p>{propsState.text}</p>
+      <button onClick={() => close()}>Close</button>
     </div>
   );
 }

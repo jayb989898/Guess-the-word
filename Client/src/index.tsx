@@ -9,7 +9,7 @@ import LostQuiz from "./routes/lost-quiz/lost-quiz";
 import WinQuiz from "./routes/win-quiz/win-quiz";
 import Login from "./routes/login/login";
 import Register from "./routes/register/register";
-import { PopupProvider } from "./components/commons/popup-message/popup-context";
+import PopupMessage from "./components/commons/popup-message/popup-message";
 
 const router = createBrowserRouter([
   {
@@ -47,7 +47,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <PopupProvider />
+    <PopupMessage />
     <RouterProvider router={router} />
   </React.StrictMode>
 );
