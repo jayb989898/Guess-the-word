@@ -1,4 +1,4 @@
-import { SelectModel } from "../components/commons/select/select-model";
+import { SelectModel } from "../models/http-responses/select-model";
 
 class FilterService {
   public findIdInSelect(

@@ -1,4 +1,4 @@
-import { SelectModel } from "../../components/commons/select/select-model";
+import { SelectModel } from "../http-responses/select-model";
 import { RegisterModel } from "../register-model";
 
 export class RegisterRequest {

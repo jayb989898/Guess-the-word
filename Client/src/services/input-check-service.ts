@@ -1,4 +1,4 @@
-import { SelectModel } from "../components/commons/select/select-model";
+import { SelectModel } from "../models/http-responses/select-model";
 
 const emailReg: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]{2,6}$/; // eslint-disable-line
 const passwordReg: RegExp =

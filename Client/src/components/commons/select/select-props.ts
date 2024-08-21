@@ -1,4 +1,4 @@
-import { SelectModel } from "./select-model";
+import { SelectModel } from "../../../models/http-responses/select-model";
 
 export class SelectProps {
   value: SelectModel | null;

@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { RegisterRequest } from "../models/requests/register-reguest";
-import { ResponseGenericModel } from "../models/response-generic-model";
+import { ResponseGenericModel } from "../models/http-responses/response-generic-model";
 import { popupService } from "./popup-service";
 
 class AuthService {

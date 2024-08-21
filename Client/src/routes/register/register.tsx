@@ -7,24 +7,26 @@ import { InputTextProps } from "../../components/commons/input-text/input-text-p
 import InputText from "../../components/commons/input-text/input-text";
 import Select from "../../components/commons/select/select";
 import { SelectProps } from "../../components/commons/select/select-props";
-import { SelectModel } from "../../components/commons/select/select-model";
+import { SelectModel } from "../../models/http-responses/select-model";
 import LinkMain from "../../components/commons/link-main/link-main";
 import { LinkMainProps } from "../../components/commons/link-main/link-main-props";
 import DialogMain from "../../components/commons/dialog/dialog-main";
 import { DialogMainProps } from "../../components/commons/dialog/dialog-main-props";
-import { PopupMessageProps } from "../../components/commons/popup-message/popup-message-props";
-import { popupService } from "../../services/popup-service";
 import { RegisterRequest } from "../../models/requests/register-reguest";
-import { ResponseGenericModel } from "../../models/response-generic-model";
+import { ResponseGenericModel } from "../../models/http-responses/response-generic-model";
 import { inputCheckService } from "../../services/input-check-service";
-import { filterService } from "../../services/filters-service";
 import { authService } from "../../services/auth-service";
+import { anagraphService } from "../../services/anagraph-service";
+import { filterService } from "../../services/filters-service";
 
 export default function Register() {
-  const [formData, setFormData] = useState(new RegisterModel());
-  const [formIsValid, setFormIsValid] = useState(false);
+  const [formData, setFormData] = useState<RegisterModel>(new RegisterModel());
+  const [formIsValid, setFormIsValid] = useState<boolean>(false);
   const [openRegistrationOkDialog, setOpenRegistrationOkDialog] =
-    useState(false);
+    useState<boolean>(false);
+  const [languages, setLanguages] = useState<Array<SelectModel>>(
+    new Array<SelectModel>()
+  );
 
   //variables to red borders of inputs
   const firstNameIsValid = useRef(true);
@@ -34,15 +36,16 @@ export default function Register() {
   const passwordIsValid = useRef(true);
   const repeatPasswordIsValid = useRef(true);
 
-  const languages: Array<SelectModel> = [
-    { id: 0, name: "Mexico" },
-    { id: 1, name: "Italy" },
-    { id: 2, name: "English" },
-  ];
-
   useEffect(() => {
     validateForm();
   });
+
+  useEffect(() => {
+    anagraphService.getLanguages().then((res: Array<SelectModel>) => {
+      console.log(res);
+      setLanguages(res);
+    });
+  }, []);
 
   function setFirstName(value: string): void {
     setFormData({ ...formData, firstName: value });

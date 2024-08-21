@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs";
 import { PopupMessageProps } from "../components/commons/popup-message/popup-message-props";
-import { ResponseGenericModel } from "../models/response-generic-model";
+import { ResponseGenericModel } from "../models/http-responses/response-generic-model";
 import { HttpStatusCode } from "axios";
 
 export class PopupService {
