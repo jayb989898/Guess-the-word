@@ -67,7 +67,7 @@ namespace Guess_the_word.Services.CheckRequests
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"ErrorCritical \\ CheckRequestService \\ CheckRegisterRequest \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
+                _logger.LogCritical($"CheckRequestService \\ CheckRegisterRequest \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
                 response.SetError(ErrorMessages.genericError);
             }
 

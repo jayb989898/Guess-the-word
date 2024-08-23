@@ -38,7 +38,7 @@ namespace Guess_the_word.Helpers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"ErrorCritical \\ AuthHelper \\ Register \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
+                _logger.LogCritical($"AuthHelper \\ Register \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
                 response.SetError(ErrorMessages.genericErrorRegister);
                 return response;
             }

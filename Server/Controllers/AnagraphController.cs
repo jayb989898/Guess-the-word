@@ -33,7 +33,7 @@ namespace Guess_the_word.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"ErrorCritical \\ AnagraphController \\ GetQuizLanguages \\ Message: {ex.Message}, CompleteLog: {ex}");
+                _logger.LogCritical($"AnagraphController \\ GetQuizLanguages \\ Message: {ex.Message}, CompleteLog: {ex}");
                 return StatusCode(StatusCodes.Status500InternalServerError, "Cannot get data!");
             }
         }

@@ -2,6 +2,8 @@ import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import LinkMain from "../link-main/link-main";
 import { LinkMainProps } from "../link-main/link-main-props";
 import { SelectProps } from "./select-props";
+import { SelectModel } from "../../../models/http-responses/select-model";
+import Spinner from "../spinner/spinner";
 
 export default function Select(props: SelectProps) {
   return (
@@ -46,8 +48,8 @@ export default function Select(props: SelectProps) {
           onChange={(event) => props.onChange(event.target.value)}
         >
           <option value="" disabled hidden></option>
-          {props.options.map((x, y) => (
-            <option key={y}>{x.name}</option>
+          {props.options.map((item: SelectModel, index: number) => (
+            <option key={index}>{item.name}</option>
           ))}
         </select>
       </div>

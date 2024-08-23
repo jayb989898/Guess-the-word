@@ -48,7 +48,7 @@ namespace Guess_the_word.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"ErrorCritical \\ AuthController \\ Register \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
+                _logger.LogCritical($"AuthController \\ Register \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
                 return StatusCode(StatusCodes.Status500InternalServerError, ErrorMessages.genericErrorRegister);
             }
         }

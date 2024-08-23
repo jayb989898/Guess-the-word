@@ -31,7 +31,7 @@ namespace Guess_the_word.Services.DB.Transaction
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"ErrorCritical \\ QueryService \\ EmailNotExist \\ email: {email}, Message: {ex.Message}, CompleteLog: {ex}");
+                _logger.LogCritical($"QueryService \\ EmailNotExist \\ email: {email}, Message: {ex.Message}, CompleteLog: {ex}");
                 return false;
             }
         }
