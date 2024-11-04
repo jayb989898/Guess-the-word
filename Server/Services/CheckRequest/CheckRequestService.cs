@@ -22,7 +22,8 @@ namespace Guess_the_word.Services.CheckRequests
         }
 
 
-        public async Task<GenericResponse> CheckRegisterRequest(RegisterRequestDTO request)
+
+        public GenericResponse CheckRegisterRequest(RegisterRequestDTO request)
         {
             GenericResponse response = new GenericResponse();
 
@@ -56,22 +57,46 @@ namespace Guess_the_word.Services.CheckRequests
                     return response;
                 }
 
-                bool emailNotExist = await _queryService.EmailNotExist(request.Email);
-                if (!emailNotExist)
-                {
-                    response.SetError(ErrorMessages.emailAlreadyRegistered);
-                    return response;
-                }
-
                 response.SetOk();
+                return response;
             }
             catch (Exception ex)
             {
                 _logger.LogCritical($"CheckRequestService \\ CheckRegisterRequest \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
                 response.SetError(ErrorMessages.genericError);
+                return response;
             }
+        }
 
-            return response;
+        public GenericResponse CheckLoginRequest(LoginRequestDTO request)
+        {
+            GenericResponse response = new GenericResponse();
+
+            try
+            {
+                bool emailIsValid = StringIsValid(request.Email);
+                if (!emailIsValid)
+                {
+                    response.SetError(ErrorMessages.genericErrorRegister);
+                    return response;
+                }
+
+                bool passwordIsValid = StringIsValid(request.Password);
+                if (!passwordIsValid)
+                {
+                    response.SetError(ErrorMessages.genericErrorRegister);
+                    return response;
+                }
+
+                response.SetOk();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"CheckRequestService \\ CheckLoginRequest \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
+                response.SetError(ErrorMessages.genericError);
+                return response;
+            }
         }
 
         private bool StringIsValid(string value)

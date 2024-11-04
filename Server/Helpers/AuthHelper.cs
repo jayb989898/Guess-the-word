@@ -43,5 +43,35 @@ namespace Guess_the_word.Helpers
                 return response;
             }
         }
+
+        public async Task<GenericResponse> ValidateLogin(LoginRequestDTO request)
+        {
+            GenericResponse response = new GenericResponse();
+            try
+            {
+                ApplicationUser? user = await _userManager.FindByNameAsync(request.Email);
+                if (user == null)
+                {
+                    response.SetError(ErrorMessages.loginNotValid);
+                    return response;
+                }
+
+                bool passwordIsValid = await _userManager.CheckPasswordAsync(user, request.Password);
+                if (!passwordIsValid)
+                {
+                    response.SetError(ErrorMessages.loginNotValid);
+                    return response;
+                }
+
+                response.SetOk();
+                return response;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"AuthHelper \\ ValidateLogin \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
+                response.SetError(ErrorMessages.genericErrorLogin);
+                return response;
+            }
+        }
     }
 }

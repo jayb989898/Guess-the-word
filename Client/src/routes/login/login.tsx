@@ -67,7 +67,7 @@ export default function Login() {
                   <InputText
                     {...new InputTextProps(
                       formData.email,
-                      "Repeat password",
+                      "Email",
                       emailIsValid.current,
                       "email",
                       "email",

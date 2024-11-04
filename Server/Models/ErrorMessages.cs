@@ -2,8 +2,18 @@
 {
     public class ErrorMessages
     {
+        #region GenericMessages
         public const string genericError = "Internal error, please try later!";
+        #endregion
+
+        #region AuthControllerMessages
+        //Register
         public const string genericErrorRegister = "Cannot perform the registration, try later!";
         public const string emailAlreadyRegistered = "The email you have provided is already associated with an account.";
+        //Login
+        public const string genericErrorLogin = "Cannot perform the login, try later!";
+        public const string emailNotRegistered = "The email you have provided is not associated with an account.";
+        public const string loginNotValid = "Incorrect username or password.";
+        #endregion
     }
 }

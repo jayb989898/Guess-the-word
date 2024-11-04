@@ -32,7 +32,7 @@ namespace Guess_the_word.Controllers
         {
             try
             {
-                GenericResponse requestIsValid = await _checkRequestService.CheckRegisterRequest(request);
+                GenericResponse requestIsValid = _checkRequestService.CheckRegisterRequest(request);
                 if (!requestIsValid.IsOk)
                 {
                     return StatusCode(StatusCodes.Status400BadRequest, requestIsValid.ErrorMessage);
@@ -49,6 +49,32 @@ namespace Guess_the_word.Controllers
             catch (Exception ex)
             {
                 _logger.LogCritical($"AuthController \\ Register \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
+                return StatusCode(StatusCodes.Status500InternalServerError, ErrorMessages.genericErrorRegister);
+            }
+        }
+
+        [HttpPost("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO request)
+        {
+            try
+            {
+                GenericResponse requestIsValid = _checkRequestService.CheckLoginRequest(request);
+                if (!requestIsValid.IsOk)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, requestIsValid.ErrorMessage);
+                }
+
+                GenericResponse userRegistered = await _authHelper.ValidateLogin(request);
+                if (!userRegistered.IsOk)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, userRegistered.ErrorMessage);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"AuthController \\ Login \\ Request: {request}, Message: {ex.Message}, CompleteLog: {ex}");
                 return StatusCode(StatusCodes.Status500InternalServerError, ErrorMessages.genericErrorRegister);
             }
         }
