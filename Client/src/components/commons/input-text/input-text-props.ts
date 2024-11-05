@@ -1,3 +1,5 @@
+import { LinkMainProps } from "../link-main/link-main-props";
+
 export class InputTextProps {
   value: string;
   labelText: string;
@@ -6,7 +8,7 @@ export class InputTextProps {
   type: "email" | "number" | "password" | "text";
   onChange: (value: string) => void;
   tooltipTextError: string | undefined;
-  linkRight: string | undefined;
+  linkRight: LinkMainProps | undefined;
   constructor(
     value: string,
     labelText: string,
@@ -15,7 +17,7 @@ export class InputTextProps {
     type: "email" | "number" | "password" | "text",
     onChange: (value: string) => void,
     tooltipTextError?: string,
-    linkRight?: string
+    linkRight?: LinkMainProps
   ) {
     this.value = value;
     this.labelText = labelText;

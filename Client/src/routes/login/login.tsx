@@ -11,6 +11,9 @@ import Logo from "../../resources/logo.png";
 import InputText from "../../components/commons/input-text/input-text";
 import { InputTextProps } from "../../components/commons/input-text/input-text-props";
 import { inputCheckService } from "../../services/input-check-service";
+import { authService } from "../../services/auth-service";
+import { LoginRequest } from "../../models/requests/login-reguest";
+import { ResponseGenericModel } from "../../models/http-responses/response-generic-model";
 
 export default function Login() {
   const [formData, setFormData] = useState(new LoginModel());
@@ -41,8 +44,14 @@ export default function Login() {
     setFormIsValid(formIsValid);
   }
 
-  function login(): void {
-    return;
+  function login(event: React.FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+    authService
+      .login(new LoginRequest(formData))
+      .then((res: ResponseGenericModel) => {
+        if (res.isOk) {
+        }
+      });
   }
 
   return (
@@ -62,7 +71,7 @@ export default function Login() {
               <Title {...new TitleProps("Sign in to your account")}></Title>
             </div>
             <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-              <form className="space-y-6" onSubmit={() => login()}>
+              <form className="space-y-6" onSubmit={(event) => login(event)}>
                 <div>
                   <InputText
                     {...new InputTextProps(
@@ -86,7 +95,7 @@ export default function Login() {
                       "text",
                       (value: string) => setPassword(value),
                       undefined,
-                      "Forgot password?"
+                      new LinkMainProps("Forgot password?", "password-reset")
                     )}
                   ></InputText>
                 </div>
@@ -98,7 +107,9 @@ export default function Login() {
               </form>
               <p className="mt-10 text-center text-sm text-gray-500">
                 Not a member?&nbsp;
-                <LinkMain {...new LinkMainProps("Register")}></LinkMain>
+                <LinkMain
+                  {...new LinkMainProps("Register", "register")}
+                ></LinkMain>
               </p>
             </div>
           </div>

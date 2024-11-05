@@ -4,6 +4,9 @@
     {
         #region GenericMessages
         public const string genericError = "Internal error, please try later!";
+        public const string emailIsNotValid = "Email pattern is not valid.";
+        public const string passwordIsNotValid = "Password pattern is not valid.";
+        public const string fieldIsNotValid = "One or more fields are invalid.";
         #endregion
 
         #region AuthControllerMessages

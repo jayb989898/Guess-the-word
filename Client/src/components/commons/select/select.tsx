@@ -1,9 +1,7 @@
 import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import LinkMain from "../link-main/link-main";
-import { LinkMainProps } from "../link-main/link-main-props";
 import { SelectProps } from "./select-props";
 import { SelectModel } from "../../../models/http-responses/select-model";
-import Spinner from "../spinner/spinner";
 
 export default function Select(props: SelectProps) {
   return (
@@ -14,7 +12,7 @@ export default function Select(props: SelectProps) {
         </label>
         {props.linkRight === undefined ? null : (
           <div className="text-sm">
-            <LinkMain {...new LinkMainProps(props.linkRight)}></LinkMain>
+            <LinkMain {...props.linkRight}></LinkMain>
           </div>
         )}
       </div>

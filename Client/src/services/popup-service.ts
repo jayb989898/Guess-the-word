@@ -22,7 +22,7 @@ export class PopupService {
   showErrorHttp(httpResponse: ResponseGenericModel) {
     if (!httpResponse.isOk) {
       let title: string = "Something went wrong!";
-      let message: string = "Please try again or send a mail to us.";
+      let message: string = "Please try again or send a email to us.";
       switch (httpResponse.httpCode) {
         case HttpStatusCode.InternalServerError: {
           message = httpResponse.messageError;

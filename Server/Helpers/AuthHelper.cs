@@ -27,10 +27,18 @@ namespace Guess_the_word.Helpers
             GenericResponse response = new GenericResponse();
             try
             {
-                IdentityResult user = await _userManager.CreateAsync(new ApplicationUser(request.Email, request.FirstName, request.LastName, request.QuizLanguage, request.ThumbnailImage));
-                if (user == null || !user.Succeeded)
+                ApplicationUser? userExist = await _userManager.FindByEmailAsync(request.Email);
+                if (userExist != null)
+                {
+                    response.SetError(ErrorMessages.emailAlreadyRegistered);
+                    return response;
+                }
+
+                IdentityResult userCreated = await _userManager.CreateAsync(new ApplicationUser(request.Email, request.FirstName, request.LastName, request.QuizLanguage, request.ThumbnailImage));
+                if (userCreated == null || !userCreated.Succeeded)
                 {
                     response.SetError(ErrorMessages.genericErrorRegister);
+                    return response;
                 }
 
                 response.SetOk();
@@ -49,7 +57,7 @@ namespace Guess_the_word.Helpers
             GenericResponse response = new GenericResponse();
             try
             {
-                ApplicationUser? user = await _userManager.FindByNameAsync(request.Email);
+                ApplicationUser? user = await _userManager.FindByEmailAsync(request.Email);
                 if (user == null)
                 {
                     response.SetError(ErrorMessages.loginNotValid);

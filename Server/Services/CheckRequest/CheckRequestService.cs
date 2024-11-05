@@ -32,28 +32,28 @@ namespace Guess_the_word.Services.CheckRequests
                 bool firstNameIsValid = StringIsValid(request.FirstName);
                 if (!firstNameIsValid)
                 {
-                    response.SetError(ErrorMessages.genericErrorRegister);
+                    response.SetError(ErrorMessages.fieldIsNotValid);
                     return response;
                 }
 
                 bool lastNameIsValid = StringIsValid(request.LastName);
                 if (!lastNameIsValid)
                 {
-                    response.SetError(ErrorMessages.genericErrorRegister);
+                    response.SetError(ErrorMessages.fieldIsNotValid);
                     return response;
                 }
 
-                bool emailIsValid = StringIsValid(request.Email);
+                bool emailIsValid = EmailPatternIsValid(request.Email);
                 if (!emailIsValid)
                 {
-                    response.SetError(ErrorMessages.genericErrorRegister);
+                    response.SetError(ErrorMessages.emailIsNotValid);
                     return response;
                 }
 
-                bool passwordIsValid = StringIsValid(request.Password);
+                bool passwordIsValid = PasswordPatternIsValid(request.Password);
                 if (!passwordIsValid)
                 {
-                    response.SetError(ErrorMessages.genericErrorRegister);
+                    response.SetError(ErrorMessages.passwordIsNotValid);
                     return response;
                 }
 
@@ -74,17 +74,17 @@ namespace Guess_the_word.Services.CheckRequests
 
             try
             {
-                bool emailIsValid = StringIsValid(request.Email);
+                bool emailIsValid = EmailPatternIsValid(request.Email);
                 if (!emailIsValid)
                 {
-                    response.SetError(ErrorMessages.genericErrorRegister);
+                    response.SetError(ErrorMessages.emailIsNotValid);
                     return response;
                 }
 
-                bool passwordIsValid = StringIsValid(request.Password);
+                bool passwordIsValid = PasswordPatternIsValid(request.Password);
                 if (!passwordIsValid)
                 {
-                    response.SetError(ErrorMessages.genericErrorRegister);
+                    response.SetError(ErrorMessages.passwordIsNotValid);
                     return response;
                 }
 
@@ -102,6 +102,16 @@ namespace Guess_the_word.Services.CheckRequests
         private bool StringIsValid(string value)
         {
             return !string.IsNullOrEmpty(value);
+        }
+
+        private bool EmailPatternIsValid(string value)
+        {
+            return Regexs.email.IsMatch(value);
+        }
+
+        private bool PasswordPatternIsValid(string value)
+        {
+            return Regexs.password.IsMatch(value);
         }
     }
 }

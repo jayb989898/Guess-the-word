@@ -1,7 +1,6 @@
 import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import { InputTextProps } from "./input-text-props";
 import LinkMain from "../link-main/link-main";
-import { LinkMainProps } from "../link-main/link-main-props";
 
 export default function InputText(props: InputTextProps) {
   return (
@@ -12,7 +11,7 @@ export default function InputText(props: InputTextProps) {
         </label>
         {props.linkRight === undefined ? null : (
           <div className="text-sm">
-            <LinkMain {...new LinkMainProps(props.linkRight)}></LinkMain>
+            <LinkMain {...props.linkRight}></LinkMain>
           </div>
         )}
       </div>

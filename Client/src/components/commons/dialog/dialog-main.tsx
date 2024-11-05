@@ -39,7 +39,7 @@ export default function DialogMain(props: DialogMainProps) {
           </div>
           <div>
             {props.text}
-            {!props.enableActionButtons ? (
+            {props.enableActionButtons ? (
               <div className="flex justify-end space-x-2 mt-6">
                 <ButtonSecondary
                   {...new ButtonSecondaryProps("Cancel", false, true, () =>
