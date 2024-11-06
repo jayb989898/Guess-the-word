@@ -1,10 +1,14 @@
-export default function Spinner() {
+import { SpinnerProps } from "./spinner-props";
+
+export default function Spinner(props: SpinnerProps) {
   return (
     <>
-      <div role="status">
+      <div id="spinner">
         <svg
           aria-hidden="true"
-          className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+          className={`${
+            "size-" + props.size
+          } text-gray-200 animate-spin dark:text-gray-600 fill-fuchsia-500`}
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

@@ -2,6 +2,8 @@ import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
 import LinkMain from "../link-main/link-main";
 import { SelectProps } from "./select-props";
 import { SelectModel } from "../../../models/http-responses/select-model";
+import Spinner from "../spinner/spinner";
+import { SpinnerProps } from "../spinner/spinner-props";
 
 export default function Select(props: SelectProps) {
   return (
@@ -50,6 +52,9 @@ export default function Select(props: SelectProps) {
             <option key={index}>{item.name}</option>
           ))}
         </select>
+        <div className="absolute inset-y-0 inset-x-0 m-auto flex items-center w-5 h-5">
+          <Spinner {...new SpinnerProps(5)}></Spinner>
+        </div>
       </div>
     </>
   );

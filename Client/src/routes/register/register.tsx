@@ -18,6 +18,7 @@ import { inputCheckService } from "../../services/input-check-service";
 import { authService } from "../../services/auth-service";
 import { anagraphService } from "../../services/anagraph-service";
 import { filterService } from "../../services/filters-service";
+import Spinner from "../../components/commons/spinner/spinner";
 
 export default function Register() {
   const [formData, setFormData] = useState<RegisterModel>(new RegisterModel());
@@ -42,7 +43,6 @@ export default function Register() {
 
   useEffect(() => {
     anagraphService.getLanguages().then((res: Array<SelectModel>) => {
-      console.log(res);
       setLanguages(res);
     });
   }, []);
