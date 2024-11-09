@@ -1,11 +1,11 @@
-import { SelectModel } from "../http-responses/select-model";
 import { RegisterModel } from "../register-model";
+import { SelectItem } from "../select-model";
 
 export class RegisterRequest {
   public firstName: string;
   public lastName: string;
   public email: string;
-  public quizLanguage: SelectModel | null;
+  public quizLanguage: SelectItem | null;
   public password: string;
   constructor(registerModel: RegisterModel) {
     this.firstName = registerModel.firstName;

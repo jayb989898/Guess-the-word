@@ -1,4 +1,4 @@
-import { SelectModel } from "../models/http-responses/select-model";
+import { SelectItem, SelectModel } from "../models/select-model";
 
 const emailReg: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]{2,6}$/; // eslint-disable-line
 const passwordReg: RegExp =
@@ -18,7 +18,7 @@ class InputCheckService {
   }
 
   public checkSelect(
-    value: SelectModel | null,
+    value: SelectItem | null,
     ignoreInitialState: boolean = false
   ): boolean {
     if (ignoreInitialState && value === null) {

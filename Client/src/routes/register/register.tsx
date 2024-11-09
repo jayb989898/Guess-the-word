@@ -7,7 +7,6 @@ import { InputTextProps } from "../../components/commons/input-text/input-text-p
 import InputText from "../../components/commons/input-text/input-text";
 import Select from "../../components/commons/select/select";
 import { SelectProps } from "../../components/commons/select/select-props";
-import { SelectModel } from "../../models/http-responses/select-model";
 import LinkMain from "../../components/commons/link-main/link-main";
 import { LinkMainProps } from "../../components/commons/link-main/link-main-props";
 import DialogMain from "../../components/commons/dialog/dialog-main";
@@ -18,15 +17,15 @@ import { inputCheckService } from "../../services/input-check-service";
 import { authService } from "../../services/auth-service";
 import { anagraphService } from "../../services/anagraph-service";
 import { filterService } from "../../services/filters-service";
-import Spinner from "../../components/commons/spinner/spinner";
+import { SelectModel } from "../../models/select-model";
 
 export default function Register() {
   const [formData, setFormData] = useState<RegisterModel>(new RegisterModel());
   const [formIsValid, setFormIsValid] = useState<boolean>(false);
   const [openRegistrationOkDialog, setOpenRegistrationOkDialog] =
     useState<boolean>(false);
-  const [languages, setLanguages] = useState<Array<SelectModel>>(
-    new Array<SelectModel>()
+  const [languagesModel, setLanguages] = useState<SelectModel>(
+    new SelectModel()
   );
 
   //variables to red borders of inputs
@@ -42,7 +41,7 @@ export default function Register() {
   });
 
   useEffect(() => {
-    anagraphService.getLanguages().then((res: Array<SelectModel>) => {
+    anagraphService.getLanguages().then((res: SelectModel) => {
       setLanguages(res);
     });
   }, []);
@@ -63,7 +62,10 @@ export default function Register() {
   }
 
   function setQuizLanguage(value: string): void {
-    const selectModel = filterService.findIdInSelect(value, languages);
+    const selectModel = filterService.findIdInSelect(
+      value,
+      languagesModel.items
+    );
     setFormData({
       ...formData,
       quizLanguage: selectModel,
@@ -206,7 +208,7 @@ export default function Register() {
                           formData.quizLanguage,
                           "Quiz language",
                           quizLanguageIsValid.current,
-                          languages,
+                          languagesModel,
                           "quizLanguage",
                           (value: string) => setQuizLanguage(value)
                         )}

@@ -1,11 +1,11 @@
-import { SelectModel } from "../models/http-responses/select-model";
+import { SelectItem } from "../models/select-model";
 
 class FilterService {
   public findIdInSelect(
     name: string,
-    options: Array<SelectModel>
-  ): SelectModel | null {
-    const selectModel = options.find((item: SelectModel) => {
+    options: Array<SelectItem>
+  ): SelectItem | null {
+    const selectModel = options.find((item: SelectItem) => {
       return item.name === name;
     });
 

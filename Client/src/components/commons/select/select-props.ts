@@ -1,20 +1,20 @@
-import { SelectModel } from "../../../models/http-responses/select-model";
+import { SelectItem, SelectModel } from "../../../models/select-model";
 import { LinkMainProps } from "../link-main/link-main-props";
 
 export class SelectProps {
-  value: SelectModel | null;
+  value: SelectItem | null;
   labelText: string;
   inputIsValid: boolean;
-  options: Array<SelectModel>;
+  options: SelectModel;
   name: string;
   onChange: (value: string) => void;
   tooltipTextError: string | undefined;
   linkRight: LinkMainProps | undefined;
   constructor(
-    value: SelectModel | null,
+    value: SelectItem | null,
     labelText: string,
     inputIsValid: boolean,
-    options: Array<SelectModel>,
+    options: SelectModel,
     name: string,
     onChange: (value: string) => void,
     tooltipTextError?: string,
