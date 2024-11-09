@@ -7,6 +7,7 @@ using Guess_the_word.Services.CheckRequests;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SharedModels;
 
 namespace Guess_the_word.Controllers
 {

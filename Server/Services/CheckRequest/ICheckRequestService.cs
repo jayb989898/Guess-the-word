@@ -1,5 +1,5 @@
-﻿using Guess_the_word.Models;
-using Guess_the_word.Models.DTO;
+﻿using Guess_the_word.Models.DTO;
+using SharedModels;
 
 namespace Guess_the_word.Services.CheckRequests
 {

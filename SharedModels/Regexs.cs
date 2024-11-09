@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Guess_the_word.Models
+namespace SharedModels
 {
     public class Regexs
     {

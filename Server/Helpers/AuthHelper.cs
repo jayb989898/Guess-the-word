@@ -4,6 +4,7 @@ using Guess_the_word.Models;
 using Guess_the_word.Models.DTO;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SharedModels;
 
 namespace Guess_the_word.Helpers
 {
